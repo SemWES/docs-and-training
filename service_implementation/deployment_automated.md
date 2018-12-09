@@ -69,13 +69,92 @@ environment variable `CFG_TOKEN`.
 To create a new, empty service, one only needs to choose a name and call the
 `create_new_service()` method of clfpy's services client:
 ```python
+import os
+
 import clfpy
 
 interface_url = 'https://api.hetcomp.org/servicectl-1/'
+token = os.environ['CFG_TOKEN']
+name = 'test-service'
+
+srv = clfpy.ServicesClient(interface_url)
+r = srv.create_new_service(token, name)
+```
+The response object, `r`, is a Python `dict`:
+```python
+>>> pprint(r)
+{'links': [{'href': '/services/test-service', 'rel': 'self'},
+           {'href': 'https://srv.hetcomp.org/cloudifacturing-test-service',
+            'rel': 'deployment'}],
+ 'name': 'test-service'}
+```
+The response object contains links to the service itself (as a relative link
+within the services-client API) as well as to the deployment URL where the
+service will be reachable once it's deployed.
+
+### 2 Obtain Docker login credentials
+The following snippet assumes that it is run after the snippet in the previous
+section.
+```python
+creds = srv.get_docker_credentials(token, name)
+```
+This returns a Python `dict` in `creds`, where Docker credentials are stored for the repository created
+together with the new service. `creds` contains the following elements:
+* `repo_uri`
+* `proxy_endpoint`
+* `user`
+* `password`
+
+### 3 Push a Docker image to the service repository
+With the elements in the `creds` object mentioned above, you can perform the
+following sequence of Docker commands to build, tag, and push a Docker image
+to the service repository:
+```
+docker login -u <user> -p <password> <proxy_endpoint>
+docker build -t somename:sometag .
+docker tag somename:sometag <repo_uri>:sometag
+docker push <repo_uri>:<sometag>
+docker logout <proxy_endpoint>
+```
+We recommend, however, to use the convenience methods offered by the services
+client, which will automatically perform the above steps for you:
+```python
+docker_source_folder = '/path/to/a/folder/containing/a/Dockerfile'
+srv.build_and_push_docker_image(token, name, docker_source_folder, creds)
+```
+In case you want to assign a different Docker tag name than `latest` to your
+image, add the tag as an optional keyword argument:
+```python
+docker_source_folder = '/path/to/a/folder/containing/a/Dockerfile'
+srv.build_and_push_docker_image(token, name, docker_source_folder, creds, tag='1.1.0')
 ```
 
-TODO: Continue here!
+### 4 Update the service with a service definition
+The following snippet updates a service, which triggers currently running
+instances of the service to be stopped and replaced by a new instance. This
+new instance can have a new Docker image, or simply new configuration
+parameters.
+section.
+```python
+project = 'cloudifacturing'
+service_definition = {
+    "container-tag": "latest",
+    "memory-reservation": 100,
+    "memory-limit": 150,
+    "container-port": 80,
+    "environment": [
+        {"name": "CONTEXT_ROOT", "value": "/{}-{}".format(project, name)}
+    ]
+}
+pprint(srv.update_service(token, name, service_definition))
+```
+The service-definition object requires the following fields:
+* `container-tag` (string): Which Docker image tag to use for the service. If
+  no tag was given when pushing Docker images to the service repository, use
+  `'latest'` here.
+* `memory-reservation`: 
 
+TODO: Continue here!
 
 ## Monitoring a service's status and logs
 
