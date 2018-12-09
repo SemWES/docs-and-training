@@ -152,9 +152,31 @@ The service-definition object requires the following fields:
 * `container-tag` (string): Which Docker image tag to use for the service. If
   no tag was given when pushing Docker images to the service repository, use
   `'latest'` here.
-* `memory-reservation`: 
+* `memory-reservation` (int): The amount of memory reserved for the service on
+  the hosting VM. Make sure to set this to the lowest realistic number, as it
+  affects how many services can be started on a single VM, and thus how many
+  VMs need to be available for hosting CloudFlow services. (You as a user won't
+  see anything of these VMs.) Use the `docker stats` command locally to
+  determine how much your service needs. Note that this is not a hard limit, so
+  the service will be allowed to allocate more memory.
+* `memory-limit` (int): Hard memory limit. If the service tries to allocate
+  more than this limit, it will be forcefully killed. Use this number to
+  accomodate for memory-usage spikes your service might have.
+* `container-port` (int): HTTP port the container listens to for incoming
+  connections. For Python-based services using the spyne library (holds for all
+  Python code examples), this is usually port 80. For the Java-based code
+  examples, this is usually port 8080.
+* `environment` (list of dicts): List of dicts with `name`-`value` pairs which
+  define the environment variables set to configure the service. Corresponds to
+  the `--env-file` argument to the `docker run` command.
 
-TODO: Continue here!
+TODO: Document convenience function for reading env files
+
+Note: In the example above, the environment variable `CONTEXT_ROOT` is set to
+`/<project>-<service-name>`. This corresponds directly to the deployment URL
+returned when creating the service (section 1 above). It is important to tell
+the Docker container to listen for connections on the same route as where the
+service is deployed. Otherwise, no connections will ever reach the service.
 
 ## Monitoring a service's status and logs
 
