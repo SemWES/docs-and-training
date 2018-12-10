@@ -14,6 +14,9 @@ the [semantic-versioning](https://semver.org/) scheme. In a nutshell,
 With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
+### 2018-12-??: Version ????
+* (PATCH) Removed note on dedicated VMs in [Getting Access](./infrastructure_overview/getting_access.md)
+
 ### 2018-12-11: Version 3.1.0
 * (MINOR) Updated [refissh API documentation](./service_APIs/api_refissh.md) to
   reflect latest refissh version
