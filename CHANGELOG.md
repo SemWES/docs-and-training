@@ -14,6 +14,9 @@ the [semantic-versioning](https://semver.org/) scheme. In a nutshell,
 With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
+### 2018-12-??: Version ????
+* (PATCH) Removed note on dedicated VMs in [Getting Access](./infrastructure_overview/getting_access.md)
+
 ### 2018-12-10: Version 3.0.0
 * (MAJOR) Service deployment is now fully automatic, see the [deployment
   manual](./service_implementation/deployment_automated.md).
