@@ -188,7 +188,7 @@ service is deployed. Otherwise, no connections will ever reach the service.
 
 ## Listing available services
 The following method prints a list of all available services:
-```python
+```
 >>> srv.print_service_list(token)
 
 2 services currently available:
@@ -211,7 +211,7 @@ r = srv.list_services(token)
 ## Monitoring a service's status
 To check whether a service has started correctly, you can obtain a detailed
 status report:
-```python
+```
 >>> srv.print_service_status(token, name)
 
 Status report for service newservice:
@@ -260,7 +260,7 @@ status should, however, always end up in a similar state as displayed above.
 
 If you call the method above for a service which has no running instances, you
 will receive an empty status report:
-```python
+```
 >>> srv.print_service_status(token, name)
 
 Status report for service test-service:
