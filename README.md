@@ -206,7 +206,7 @@ hooked up to make a workflow. This section deals with all things done
   keep in mind when performing such upgrades.
 
 ### Using the HPC service
-* (updated in v2.1.0) [Overview over the generic HPC service](workflow_creation/HPC_service.md):
+* [Overview over the generic HPC service](workflow_creation/HPC_service.md):
   Introduces the generic HPC service and showcases how it can be used to
   execute Singularity images on the available HPC resources.
 
