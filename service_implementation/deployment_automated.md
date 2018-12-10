@@ -168,9 +168,17 @@ The service-definition object requires the following fields:
   examples, this is usually port 8080.
 * `environment` (list of dicts): List of dicts with `name`-`value` pairs which
   define the environment variables set to configure the service. Corresponds to
-  the `--env-file` argument to the `docker run` command.
-
-TODO: Document convenience function for reading env files
+  the `--env-file` argument to the `docker run` command. If you have
+  environment files defined for your service (for example for local testing),
+  you can also create the `environment` dict with the `read_env_file()` method
+  of the services client:
+  ```
+  service_definition = {
+      # ...
+      'environment': srv.read_env_file(path_to_env_file)
+  }
+  # ...
+  ```
 
 Note: In the example above, the environment variable `CONTEXT_ROOT` is set to
 `/<project>-<service-name>`. This corresponds directly to the deployment URL
@@ -178,6 +186,107 @@ returned when creating the service (section 1 above). It is important to tell
 the Docker container to listen for connections on the same route as where the
 service is deployed. Otherwise, no connections will ever reach the service.
 
-## Monitoring a service's status and logs
+## Listing available services
+The following method prints a list of all available services:
+```python
+>>> srv.print_service_list(token)
+
+2 services currently available:
+newservice-5
+  Deployment path: https://srv.hetcomp.org/cloudifacturing-newservice-5
+test-service
+  Deployment path: https://srv.hetcomp.org/cloudifacturing-test-service
+```
+Note that all services known to CloudFlow for the current project are listed,
+even if these services have never been started or if their repositories don't
+contain any Docker images.
+
+If you want to have a service list which is programmatically processable, use
+the following method instead to receive a list of Python objects instead of a
+printed list:
+```python
+r = srv.list_services(token)
+```
+
+## Monitoring a service's status
+To check whether a service has started correctly, you can obtain a detailed
+status report:
+```python
+>>> srv.print_service_status(token, name)
+
+Status report for service newservice:
+Service status: ACTIVE
+Desired count: 1
+Running count: 1
+Pending count: 0
+
+Tasks:
+86b40ed8-ce68-4350-b2fd-80be3887c2dd
+  Created: 2018-12-10 08:08:06
+  Desired status: RUNNING
+  Last status: RUNNING
+
+  Task definition:
+    Name: cloudifacturing-newservice
+    Revision: 5
+    Status: ACTIVE
+    Container image: 400389127564.dkr.ecr.eu-central-1.amazonaws.com/cloudifacturing-newservice:latest
+    Container memory reservation: 100
+    Container memory limit: 150
+    Container port: 80
+
+Last events:
+2018-12-10 08:08:43: (service cloudifacturing-newservice) has reached a steady state.
+2018-12-10 08:08:18: (service cloudifacturing-newservice) registered 1 targets in (target-group arn:aws:elasticloadbalancing:eu-central-1:400389127564:targetgroup/cloudifacturing-newservice/0201b39a2bd062c1)
+2018-12-10 08:08:06: (service cloudifacturing-newservice) has started 1 tasks: (task 86b40ed8-ce68-4350-b2fd-80be3887c2dd).
+
+Target health:
+Health-check path: https://srv.hetcomp.org//cloudifacturing-newservice/
+Health-check interval: 30
+Health-check status codes: 200-499
+Target 1/1: i-08e5f0237d99e018d, Port: 32840, Health: healthy
+```
+CloudFlow uses Amazon Web Services (AWS) and their elastic container services
+for service deployment. The status messages and events in this report are
+therefore specific to AWS. Indicators for a successfully started service are:
+* a running count of 1,
+* a single task in the state `RUNNING`,
+* a last event of "... has reached a steady state",
+* and a single healthy target.
+
+When updating a service and monitoring the status regularly, you will see that
+more than one single task can run in such a transitionary time. A service's
+status should, however, always end up in a similar state as displayed above.
+
+If you call the method above for a service which has no running instances, you
+will receive an empty status report:
+```python
+>>> srv.print_service_status(token, name)
+
+Status report for service test-service:
+Service status: unknown
+Desired count: unknown
+Running count: unknown
+Pending count: unknown
+
+Tasks:
+
+Last events:
+
+Target health:
+Health-check path: https://srv.hetcomp.org//cloudifacturing-test-service/
+Health-check interval: 30
+Health-check status codes: 200-499
+```
+
+For a status report that can be programmatically processed, use the following
+method instead:
+```python
+r = srv.get_service_status(token, name)
+```
+
+## Monitoring a service's log files
 
 ## Deleting a service
+
+## Defining custom health checks
