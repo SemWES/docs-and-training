@@ -46,6 +46,19 @@ Additionally, the CloudFlow Python library clfpy
 (https://github.com/CloudiFacturing/clfpy) comes with a client for servicectl.
 In the examples given here, we will be using this client.
 
+### Where are code examples?
+For a minimal example of creating, deploying, monitoring, and deleting a
+service, check the test scripts in the clfpy library
+(https://github.com/CloudiFacturing/clfpy):
+* `test_services_create.py`: Creates and deploys a new service (requires
+  Docker container source code to build from)
+* `test_services_status_and_logs.py`: Prints status and log information for a
+  running service
+* `test_services_delete.py`: Deletes the created service
+
+Alternatively, read the rest of this article for step-by-step instructions and
+examples.
+
 ## Creating and starting a new service
 The creation of a new service contains the following steps:
 1. Create a new, empty, and non-active service. This will set up all the
@@ -286,7 +299,97 @@ r = srv.get_service_status(token, name)
 ```
 
 ## Monitoring a service's log files
+In contrast to monitoring a service's _status_, which gives information about
+the general health state of a service as seen from the outside, the _Docker
+log files_ provide important information on what is happening inside a service
+container. You can print log files with the following ServicesClient method:
+```
+>>> srv.print_service_logs(token, 'newservice')
+
+Printing logs for service 'newservice'
+Printing the last 20 log events for the last 1 log streams
+
+Events for log stream 1/1 - cloudifacturing-newservice/cloudifacturing-newservice/86b40ed8-ce68-4350-b2fd-80be3887c2dd:
+2018-12-10 08:25:29: 10.0.142.6 - - [10/Dec/2018:08:25:29 +0000] "GET /cloudifacturing-newservice/ HTTP/1.1" 404 5 "-" "ELB-HealthChecker/2.0" "-"
+2018-12-10 08:25:29: [pid: 14|app: 0|req: 66/69] 10.0.142.6 () {36 vars in 446 bytes} [Mon Dec 10 08:25:29 2018] GET /cloudifacturing-newservice/ => generated 0 bytes in 0 msecs (HTTP/1.1 404) 0 headers in 26 bytes (0 switches on core 0)
+2018-12-10 08:25:29: 10.0.154.158 - - [10/Dec/2018:08:25:29 +0000] "GET /cloudifacturing-newservice/ HTTP/1.1" 404 5 "-" "ELB-HealthChecker/2.0" "-"
+2018-12-10 08:25:29: [pid: 14|app: 0|req: 67/70] 10.0.154.158 () {36 vars in 448 bytes} [Mon Dec 10 08:25:29 2018] GET /cloudifacturing-newservice/ => generated 0 bytes in 0 msecs (HTTP/1.1 404) 0 headers in 26 bytes (0 switches on core 0)
+2018-12-10 08:25:59: 10.0.142.6 - - [10/Dec/2018:08:25:59 +0000] "GET /cloudifacturing-newservice/ HTTP/1.1" 404 5 "-" "ELB-HealthChecker/2.0" "-"
+2018-12-10 08:25:59: [pid: 14|app: 0|req: 68/71] 10.0.142.6 () {36 vars in 446 bytes} [Mon Dec 10 08:25:59 2018] GET /cloudifacturing-newservice/ => generated 0 bytes in 0 msecs (HTTP/1.1 404) 0 headers in 26 bytes (0 switches on core 0)
+2018-12-10 08:25:59: 10.0.154.158 - - [10/Dec/2018:08:25:59 +0000] "GET /cloudifacturing-newservice/ HTTP/1.1" 404 5 "-" "ELB-HealthChecker/2.0" "-"
+2018-12-10 08:25:59: [pid: 14|app: 0|req: 69/72] 10.0.154.158 () {36 vars in 448 bytes} [Mon Dec 10 08:25:59 2018] GET /cloudifacturing-newservice/ => generated 0 bytes in 0 msecs (HTTP/1.1 404) 0 headers in 26 bytes (0 switches on core 0)
+2018-12-10 08:26:29: 10.0.142.6 - - [10/Dec/2018:08:26:29 +0000] "GET /cloudifacturing-newservice/ HTTP/1.1" 404 5 "-" "ELB-HealthChecker/2.0" "-"
+2018-12-10 08:26:29: [pid: 14|app: 0|req: 70/73] 10.0.142.6 () {36 vars in 446 bytes} [Mon Dec 10 08:26:29 2018] GET /cloudifacturing-newservice/ => generated 0 bytes in 0 msecs (HTTP/1.1 404) 0 headers in 26 bytes (0 switches on core 0)
+2018-12-10 08:26:29: 10.0.154.158 - - [10/Dec/2018:08:26:29 +0000] "GET /cloudifacturing-newservice/ HTTP/1.1" 404 5 "-" "ELB-HealthChecker/2.0" "-"
+2018-12-10 08:26:29: [pid: 14|app: 0|req: 71/74] 10.0.154.158 () {36 vars in 448 bytes} [Mon Dec 10 08:26:29 2018] GET /cloudifacturing-newservice/ => generated 0 bytes in 0 msecs (HTTP/1.1 404) 0 headers in 26 bytes (0 switches on core 0)
+2018-12-10 08:26:59: 10.0.142.6 - - [10/Dec/2018:08:26:59 +0000] "GET /cloudifacturing-newservice/ HTTP/1.1" 404 5 "-" "ELB-HealthChecker/2.0" "-"
+2018-12-10 08:26:59: [pid: 14|app: 0|req: 72/75] 10.0.142.6 () {36 vars in 446 bytes} [Mon Dec 10 08:26:59 2018] GET /cloudifacturing-newservice/ => generated 0 bytes in 0 msecs (HTTP/1.1 404) 0 headers in 26 bytes (0 switches on core 0)
+2018-12-10 08:26:59: 10.0.154.158 - - [10/Dec/2018:08:26:59 +0000] "GET /cloudifacturing-newservice/ HTTP/1.1" 404 5 "-" "ELB-HealthChecker/2.0" "-"
+2018-12-10 08:26:59: [pid: 14|app: 0|req: 73/76] 10.0.154.158 () {36 vars in 448 bytes} [Mon Dec 10 08:26:59 2018] GET /cloudifacturing-newservice/ => generated 0 bytes in 0 msecs (HTTP/1.1 404) 0 headers in 26 bytes (0 switches on core 0)
+2018-12-10 08:27:29: 10.0.142.6 - - [10/Dec/2018:08:27:29 +0000] "GET /cloudifacturing-newservice/ HTTP/1.1" 404 5 "-" "ELB-HealthChecker/2.0" "-"
+2018-12-10 08:27:29: [pid: 14|app: 0|req: 74/77] 10.0.142.6 () {36 vars in 446 bytes} [Mon Dec 10 08:27:29 2018] GET /cloudifacturing-newservice/ => generated 0 bytes in 0 msecs (HTTP/1.1 404) 0 headers in 26 bytes (0 switches on core 0)
+2018-12-10 08:27:29: 10.0.154.158 - - [10/Dec/2018:08:27:29 +0000] "GET /cloudifacturing-newservice/ HTTP/1.1" 404 5 "-" "ELB-HealthChecker/2.0" "-"
+2018-12-10 08:27:29: [pid: 14|app: 0|req: 75/78] 10.0.154.158 () {36 vars in 448 bytes} [Mon Dec 10 08:27:29 2018] GET /cloudifacturing-newservice/ => generated 0 bytes in 0 msecs (HTTP/1.1 404) 0 headers in 26 bytes (0 switches on core 0)
+```
+If no further arguments are given, the services client prints the newest 20 log
+events from the _log stream_ with the latest activity. For each service
+instance, a separate log stream is created. Consequently, each new deployment
+(triggered by a call to `srv.update_service()`) creates a new log stream.
+
+`print_service_logs()` takes the following two optional arguments:
+* `tail=50`: prints the last 50 log events for each log stream; corresponds to
+  the `--tail` option for `docker logs`
+* `streams=3`: prints log events for the last 3 log streams; use this for
+  accessing logs from tasks that have been stopped and re-started (= updated)
+
+The example above shows only log events triggered by the health checker which
+pings each service regularly to make sure that it is still alive. This
+sometimes can make it difficult to find more relevant log events. One option
+around this is to increase the interval between two consecutive health checks.
+See the section on "Defining custom health checks" below for details.
 
 ## Deleting a service
+Finally, to delete a service, call:
+```python
+srv.delete_service(name)
+```
+This stops any running service instances and deletes all resources associated
+with the service. Note that this includes all logs and repository images. You
+will have to re-push images if you re-create a service after deleting it.
 
 ## Defining custom health checks
+When creating a new service, a standard health check is defined. In this
+standard health check, a GET request is performed on the service's deployment
+path (`https://srv.hetcomp.org/<project>-<service_name>`). The service is
+considered healthy if the HTTP response code is anything between 200 and 499.
+This means that as long as the service is alive and exposing a web server, even
+"Not Found" errors (response code 404) are considered healthy. However, any
+server-side errors (reponse codes 5xx) are considered unhealthy.
+
+Note that unhealthy services will automatically be terminated and restarted. If
+your container contains a bug causing consistent server-side errors, the
+service will get stuck in a restart loop.
+
+Upon service creation, you can also define a custom health check, where you can
+define the health-check path, the accepted response codes, and the interval
+between two consecutive health checks. For the SOAP services used in CloudFlow,
+one can for example check if the wsdl service definition is available. To
+define a custom health check, pass the `health_check` argument when creating a
+new service:
+```python
+# ...
+health_check = {
+    'rel_path': '{}-{}/MyService?wsdl'.format(project, name),
+    'status_codes': '200',
+    'interval': 60
+}
+r = srv.create_new_service(token, name, health_check=health_check)
+```
+Notes
+* The health-check path (`rel_path`) must always begin with the service's
+  deployment path, which depends on the project the used token is associated
+  with and the name of the service to be created.
+* `status_codes` must be a string literal, not an integer. You can define lists
+  (`'200,201'`) or ranges (`'200-299'`) as well.
+* `interval` (must be an integer) is the number of seconds between two
+  consecutive health checks.
