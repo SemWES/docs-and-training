@@ -113,7 +113,7 @@ having to rebuild the test-client container first.
 If you again run `docker logs calculator`, you will see some http requests in
 the logs which correspond to the function calls the test client made.
 
-## Step 3: Implement a division method for the calculator
+## Step 4: Implement a division method for the calculator
 We will now extend the calculator by implementing another calculation operation,
 namely the division of two numbers.
 
