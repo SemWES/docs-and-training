@@ -17,6 +17,7 @@ With each version, a git tag and an accompanying GitHub release will be created.
 ### 2018-12-??: Version ????
 * (MINOR) Removed deprecated image-converter example and re-wrote info on GSS
   libraries.
+* (MINOR) Added documentation of [in-service token validation](./service_implementation/advanced_authentication.md)
 * (PATCH) Removed note on dedicated VMs in [Getting Access](./infrastructure_overview/getting_access.md)
 
 ### 2018-12-11: Version 3.1.0

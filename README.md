@@ -45,7 +45,11 @@ New to the CloudFlow platform? Read all about its concepts and background here.
 
 * [Getting access](infrastructure_overview/getting_access.md): Need access to
   the CloudFlow platform in CloudiFacturing? Look here.
-  
+
+* [Users, projects, and authentication](./infrastructure_overview/authentication.md):
+  Gives a short overview of how user authentication and data-access restriction
+  works on the CloudFlow platform.
+
 * [Workflows and services in the CloudFlow cloud – an overview](infrastructure_overview/workflows_and_services.md):
   Gives a compact overview over the concepts behind CloudFlow and what services
   and workflows are and how they are executed. Also explains the nomenclature
