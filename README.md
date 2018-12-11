@@ -128,16 +128,14 @@ the graphical tools provided on the portal).
   through the workflow manager.
 
 ### File access
-  * [Tutorial: Low-level file access (showcased via a simple image converter)](tutorials/services/python_imageconverter.md):
-    Learn how to programmatically access files via GSS by implementing a simple
-    synchronous image conversion service. This tutorial also teaches you an
-    understanding of how GSS works, but it won't show you production-quality
-    code.
+  * If you haven't done so already, it is recommended to read the general
+    principles of [accessing cloud storage](infrastructure_overview/storage.md)
+    on the CloudFlow platform.
   * [High-level file access using GSS libraries](service_implementation/basics_gss_libraries.md):
-    In practice, one most likely wants to hide the interplay of SOAP and REST
-    calls when accessing GSS behind some kind of library. This article gives
-    an overview over existing libraries and their usage.
-    
+    While it is perfectly possible to directly interact with the GSS API, it is
+    highly recommended to use the provided GSS client libraries for file access
+    in CloudFlow. This article gives an overview over existing libraries and
+    their usage.
 
 ### Using HPC resources
   * [HPC access through the CloudFlow platform](service_implementation/basics_hpc.md):
