@@ -6,8 +6,8 @@ cname=waiter
 
 if [ -z "$1" ]
   then
-    echo No port given, setting port to 8080
-    port=8080
+    echo No port given, setting port to 80
+    port=80
 else
   port=$1
 fi
