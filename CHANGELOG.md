@@ -21,6 +21,7 @@ With each version, a git tag and an accompanying GitHub release will be created.
 * (MINOR) Added [servicectl API documentation](./service_APIs/api_servicectl.md)
 * (MINOR) Created new section on workflow debugging
 * (MINOR) Added readme for the asynchronous-service code example
+* (PATCH) Updated deployment path and port for debugger code example
 * (PATCH) Removed remaining CAxMan elements from calculator tutorial
 * (PATCH) Removed note on dedicated VMs in [Getting Access](./infrastructure_overview/getting_access.md)
 * (PATCH) Updated table of contents on the main page

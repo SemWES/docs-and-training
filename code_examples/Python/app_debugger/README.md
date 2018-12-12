@@ -3,9 +3,9 @@ Python-based CloudFlow application for workflow debugging
 This CloudFlow application offers tools for debugging workflows.
 
 ## `displayParameters` service
-Currently, only one application is available, registered under the following URI:
+This application is registered under the following URI:
 ```
-http://sintef/apps/displayParameters.owl#displayParameters_Service
+http://sintef/apps/Debugger_displayParameters.owl#displayParameters_Service
 ```
 This application pauses the workflow and offers to display any output parameters
 created so far.
