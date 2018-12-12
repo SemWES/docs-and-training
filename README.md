@@ -49,6 +49,9 @@ New to the CloudFlow platform? Read all about its concepts and background here.
 * [Getting access](infrastructure_overview/getting_access.md): Need access to
   the CloudFlow platform in CloudiFacturing? Look here.
 
+* [Demos](infrastructure_overview/demos.md): If you want to get your hands
+  dirty immediately and try out some demo workflows on the platform, look here.
+
 * [Users, projects, and authentication](./infrastructure_overview/authentication.md):
   Gives a short overview of how user authentication and data-access restriction
   works on the CloudFlow platform.
@@ -192,6 +195,10 @@ hooked up to make a workflow. This section deals with all things done
 "graphically" via the tools provided on the portal.
 
 ### Basic workflow editing
+* Don't forget to have a look at the [demo
+  workflows](./infrastructure_overview/demos.md)
+  to learn from some pre-defined workflow examples.
+
 * [Tutorial: Overview over the portal GUI](tutorials/workflows/basics_portal_overview.md):
   In this tutorial you will get to know the portal GUI, start a workflow and
   inspect its results.
