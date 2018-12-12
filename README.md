@@ -258,3 +258,4 @@ have a look at our API references:
 * [Authentication manager](service_APIs/api_authentication.md)
 * [GSS](service_APIs/api_gss.md)
 * [refissh](service_APIs/api_refissh.md)
+* [servicectl](service_APIs/api_servicectl.md)
