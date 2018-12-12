@@ -45,8 +45,8 @@ def main():
         port = int(sys.argv[1])
         print("Using port {}".format(port))
     except:
-        print("Couldn't get port from commandline argument, using 8080.")
-        port = 8080
+        print("Couldn't get port from commandline argument, using 80.")
+        port = 80
 
     try:
         context_root = os.environ["CONTEXT_ROOT"]
@@ -54,7 +54,7 @@ def main():
         print("Error: environment variable CONTEXT_ROOT not set.")
         exit(1)
 
-    url = "http://localhost:{}{}/waiter/Waiter?wsdl".format(port, context_root)
+    url = "http://localhost:{}{}/Waiter?wsdl".format(port, context_root)
     print("wsdl URL is {}".format(url))
 
     if len(sys.argv) != 3:
