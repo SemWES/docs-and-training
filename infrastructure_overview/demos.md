@@ -16,7 +16,7 @@ use them as the basis for your own workflows. However, please do _not_ modify
 any of the workflows listed here.
 
 ### Calculator
-**Workflow name and URI:** Demo_Calculator (http://demo/workflow/Demo_Calculator.owl#Demo_Calculator)\
+**Workflow name and URI:** Demo_Calculator (http://demo/workflow/Demo_Calculator.owl#Demo_Calculator)<br/>
 **Requires login with demo project:** No
 
 This workflow showcases the multiplication of two numbers entered by the user.
