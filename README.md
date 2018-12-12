@@ -235,6 +235,8 @@ hooked up to make a workflow. This section deals with all things done
   Want to show some HTML during a workflow? Need a user decision somewhere inside
   the workflow? DFKI's utility suite offers ready-made services just for that.
 
+### Workflow debugging
+
 * [Parameter debugger](code_examples/Python/app_debugger/README.md):
   This simple application offers the option to pause a workflow and display any
   parameters that are currently in use. Great for debugging failing workflows
