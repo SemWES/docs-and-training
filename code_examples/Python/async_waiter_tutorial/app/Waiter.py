@@ -9,6 +9,9 @@ import logging
 
 from spyne import Application, srpc, ServiceBase, Unicode, Integer, Boolean
 from spyne.protocol.soap import Soap11
+from spyne.model.fault import Fault
+
+from clfpy import AuthClient, ExtraParameters
 
 # Define the target namespace
 TNS = "waiter.sintef.no"
@@ -19,8 +22,15 @@ SERVICENAME = "Waiter"
 WAITER_LOG_FOLDER = os.environ["WAITER_LOG_FOLDER"]
 
 
+class TokenValidationFailedFault(Fault):
+    """Raised when validation of the session token fails"""
+    pass
+
+
 class WaiterService(ServiceBase):
     """The actual waiter asynchronous service."""
+
+    auth_wsdl = ''
 
 
 def create_html_progresspage(progress):
