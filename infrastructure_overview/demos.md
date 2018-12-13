@@ -2,6 +2,11 @@
 Try these demo workflows to get a quick impression of what can be done on the
 CloudFlow platform.
 
+Note: It is recommended to have a basic knowledge of the different [service
+types](./service_types.md) on the CloudFlow platform when executing the demo
+workflows, as it will lead to a better understanding of what these workflows
+actually do.
+
 ## The demo project
 Some of the workflows listed here require certain input files. For those
 workflows, please log into the `demo` project with your usual username and
@@ -37,3 +42,14 @@ showcases how asynchronous services can have detailed HTML status reports.
 Also see the accompanying [waiter
 tutorial](../tutorials/services/python_async_waiter.md) and full [waiter code
 example](../code_examples/Python/async_waiter).
+
+### Dialog
+**Workflow name and URI:** Demo_Dialog (http://demo/workflow/Demo_Dialog.owl#Demo_Dialog)<br/>
+**Requires login with demo project:** No
+
+This workflow demonstrates a simple application service. It contains only a
+button which, when clicked, will end the application (and therewith also the
+workflow).
+
+Also see the accompanying full [dialog code
+example](../code_examples/Python/app_simple).
