@@ -21,3 +21,19 @@ any of the workflows listed here.
 
 This workflow showcases the multiplication of two numbers entered by the user.
 It demonstrates simple user input as well as the usage of synchronous services.
+
+Also see the accompanying [calculator
+tutorial](../tutorials/services/python_sync_calculator.md) and full
+[calculator code example](../code_examples/Python/sync_calculator).
+
+### Waiter
+**Workflow name and URI:** Demo_Waiter (http://demo/workflow/Demo_Waiter.owl#Demo_Waiter)<br/>
+**Requires login with demo project:** No
+
+This workflow demonstrates a simple asynchronous service, which does nothing
+but waiting for a defined time. While not very spectacular in itself, it
+showcases how asynchronous services can have detailed HTML status reports.
+
+Also see the accompanying [waiter
+tutorial](../tutorials/services/python_async_waiter.md) and full [waiter code
+example](../code_examples/Python/async_waiter).
