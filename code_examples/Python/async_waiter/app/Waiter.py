@@ -48,7 +48,7 @@ class WaiterService(ServiceBase):
     @rpc(Unicode, Unicode, Unicode, Integer, _returns=(Unicode, Unicode),
           _out_variable_names=("status_base64", "result"),
           _throws=[TokenValidationFailedFault])
-    def startWaiter(ctx, serviceID, sessionToken, extraParameters, secondsToWait=300):
+    def startWaiter(ctx, serviceID, sessionToken, extraParameters, secondsToWait):
         """Starts a waiter script as a separate process and returns immediately.
 
         In a more realistic scenario, this is where a longer computation etc.
@@ -67,8 +67,14 @@ class WaiterService(ServiceBase):
         ctx.descriptor.service_class.auth_wsdl = ep.get_auth_WSDL_URL()
         auth = AuthClient(ep.get_auth_WSDL_URL())
         if not auth.validate_session_token(sessionToken):
+            logging.error("Token validation failed")
             error_msg = "Session-token validation failed"
             raise TokenValidationFailedFault(faultstring=error_msg)
+
+        # Add default value for waiting time
+        if secondsToWait is None:
+            logging.info("Setting default value for waiting time")
+            secondsToWait = 60
 
         # Create a temporary folder to store the status files in.
         # Note that we use the service ID as a unique identifier. Since this
@@ -86,6 +92,7 @@ class WaiterService(ServiceBase):
         # Spawn new process running the waiter script.
         # We pass the status and result file to the script to ensure that the
         # waiter logs to the correct place.
+        logging.info("Starting waiter script")
         command = ['python', 'wait_a_while.py', str(secondsToWait),
                    statusfile, resultfile]
         subprocess.Popen(command)
@@ -116,6 +123,7 @@ class WaiterService(ServiceBase):
         # and check that the session token is valid
         auth = AuthClient(ctx.descriptor.service_class.auth_wsdl)
         if not auth.validate_session_token(sessionToken):
+            logging.error("Token validation failed")
             error_msg = "Session-token validation failed"
             raise TokenValidationFailedFault(faultstring=error_msg)
 
@@ -132,6 +140,7 @@ class WaiterService(ServiceBase):
             current_status = f.read().strip()
 
         if current_status == "100":
+            logging.info("Waiting completed")
             status = "COMPLETED"
             # Read result page from waiter
             with open(resultfile) as f:
