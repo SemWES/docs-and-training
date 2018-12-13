@@ -6,6 +6,9 @@ does nothing but to wait for a specified amount of time, but uses the same
 concepts and techniques required for wrapping a longer-running calculation in
 a CloudFlow asynchronous service.
 
+It also protects all methods by checking that the supplied session token is
+valid.
+
 For details on the implementation, also read the [corresponding
 tutorial](../../tutorials/services/python_async_waiter.md).
 
@@ -38,9 +41,9 @@ application source code.
 To compile service source code, pack it into a Docker container, and run the
 container, run
 ```
-./rebuildandrun.sh <port>
+./rebuildandrun.sh
 ```
-Choose a port number that is available on your machine.
+The container will listen on port 80 of your machine.
 
 On the first run, this might take a while since the base container images need
 to be downloaded and dependencies need to be installed. Subsequent builds will
@@ -51,7 +54,7 @@ returns immediately and that logs are not immediately visible.
 
 Alternatively, run the container interactively via:
 ```
-docker run -p <port>:80 --env-file=env calculator
+docker run -p 80:80 --env-file=env calculator
 ```
 Again, choose a fitting port number
 
@@ -68,13 +71,16 @@ Docker container for executing the test client.
 To use the Python container, run
 ```
 cd test_client
-./build.sh      # run only once
-./run.sh        # run every time you want to test
+./build.sh                # run only once
+./run.sh [start|status]   # run every time you want to test
 ```
 
 You can make changes to `test_service.py` to test other methods or other
 deployment locations. Rebuilding the container is not necessary after such
 changes.
+
+Note that you will have to enter your username, project, and password for each
+test run in order to obtain a valid session token.
 
 ## Use this example as a template
 To use this example as a template for your own service development, simply copy

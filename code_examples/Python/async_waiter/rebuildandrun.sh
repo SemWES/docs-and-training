@@ -3,14 +3,7 @@
 # Builds and runs the container locally (for testing purposes)
 
 cname=waiter
-
-if [ -z "$1" ]
-  then
-    echo No port given, setting port to 80
-    port=80
-else
-  port=$1
-fi
+port=80
 
 docker kill $cname
 docker rm $cname
