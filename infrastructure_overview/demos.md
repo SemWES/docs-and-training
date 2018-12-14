@@ -53,3 +53,33 @@ workflow).
 
 Also see the accompanying full [dialog code
 example](../code_examples/Python/app_simple).
+
+### HPC waiter
+**Workflow name and URI:** Demo_HPC_Waiter (http://demo/workflow/Demo_HPC_Waiter.owl#Demo_HPC_Waiter)<br/>
+**Requires login with demo project:** Yes (Singularity image registered with the demo project)
+
+This workflow demonstrates CloudFlow's interface to an HPC cluster. It starts
+a simple HPC job on IT4I's Anselm cluster and reports the job's status back to
+the user. The job itself is not doing anything meaningful, as it is meant for
+demonstration only.
+
+The basics of creating Singularity images for HPC jobs are described
+[here](../service_implementation/basics_singularity.md).  Also see the
+accompanying [HPC waiter code example](../code_examples/Singularity/waiter).
+
+### Abortable HPC waiter
+**Workflow name and URI:** Demo_HPC_Abortable_Waiter (http://demo/workflow/Demo_HPC_Abortable_Waiter.owl#Demo_HPC_Abortable_Waiter)<br/>
+**Requires login with demo project:** Yes (Singularity image registered with the demo project)
+
+This workflow is very similar to the HPC waiter described above. But while the
+HPC waiter only presents the status report from the HPC job, this abortable
+waiter adds a communication channel back to the running HPC job, via which the
+job can be aborted before the waiting time is over.
+
+Again, the workflow in itself doesn't do anything meaningful, but it can be
+seen as a blueprint for an HPC job with a control panel exposed to the user.
+
+A detailed explanation of this additional communication channel can be found
+[here](../service_implementation/advanced_hpc_notifications.md).  Also see the
+accompanying [HPC abortable waiter code
+example](../code_examples/Singularity/abortable_waiter).
