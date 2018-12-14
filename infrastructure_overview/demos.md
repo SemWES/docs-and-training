@@ -83,3 +83,17 @@ A detailed explanation of this additional communication channel can be found
 [here](../service_implementation/advanced_hpc_notifications.md).  Also see the
 accompanying [HPC abortable waiter code
 example](../code_examples/Singularity/abortable_waiter).
+
+### Abortable HPC waiter with pre-processor
+**Workflow name and URI:** Demo_HPC_Abortable_Waiter_prep (http://demo/workflow/Demo_HPC_Abortable_Waiter_prep.owl#Demo_HPC_Abortable_Waiter_prep)<br/>
+**Requires login with demo project:** Yes (Singularity image registered with the demo project)
+
+This workflows does exactly the same as the abortable waiter described above.
+Under the hood, however, it doesn't hard-code the input parameters to the HPC
+service, but instead uses a dedicated pre-processor (synchronous) service. For
+many HPC jobs where the input parameters depend on user input, such pre-processor
+services are necessary.
+
+See [here](../workflow_creation/HPC_prepost.md) for details on pre- and
+post-processors. Also see the accompanying [HPC preprocessor code
+example](../code_examples/Python/sync_HPC_preprocessor).
