@@ -4,10 +4,16 @@
 import os
 import sys
 import base64
+import getpass
 
 from suds.client import Client
 from suds.cache import NoCache
 from suds import WebFault, MethodNotFound
+
+from clfpy import AuthClient
+
+auth_endpoint = 'https://api.hetcomp.org/authManager/AuthManager?wsdl'
+extra_pars = "auth={},WFM=dummy,".format(auth_endpoint)
 
 
 def soap_call(wsdl_url, methodname, method_args):
@@ -28,12 +34,7 @@ def soap_call(wsdl_url, methodname, method_args):
 
 
 def main():
-    try:
-        port = int(sys.argv[1])
-        print("Using port {}".format(port))
-    except:
-        print("Couldn't get port from commandline argument, using 80.")
-        port = 80
+    port = 80
 
     try:
         context_root = os.environ["CONTEXT_ROOT"]
@@ -44,8 +45,15 @@ def main():
     url = "http://localhost:{}{}/Debugger?wsdl".format(port, context_root)
     print("wsdl URL is {}".format(url))
 
-    print("Calling displayParameters()")
-    response = soap_call(url, "displayParameters", ["serviceID1", "sessionToken", "WFM=https://blablabla.com/WFM?wsdl,", "Some input", "Label1", "Second input", "Label2"])
+    print("Obtaining session token")
+    user = input("Enter username: ")
+    project = input("Enter project: ")
+    password = getpass.getpass(prompt="Enter password: ")
+    auth = AuthClient(auth_endpoint)
+    token = auth.get_session_token(user, project, password)
+
+    print("Calling parameterDebugger()")
+    response = soap_call(url, "parameterDebugger", ["serviceID1", token, extra_pars, "Some input", "Label1", "Second input", "Label2"])
     html = base64.b64decode(response).decode()
     with open("test.html", 'w') as fout:
         fout.write(html)
