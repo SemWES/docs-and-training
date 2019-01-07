@@ -1,7 +1,7 @@
 Parameter Extraction for CloudiFacturing Generic User Input asynchronous Web Application
 ===
 
-Web applications used for printing typically rely on end user input. In order to prevent malicious parameter inputs, workflow providers have to specify valid parameter ranges for inputs. A suitable way to allow for parameter configuration are spreadsheet files. For this purpose, this repository provides the _GenericGUIApplication_ GUI web application in _code\_examples/Python/app\_generic\gui_. It allows for interactive parameter specification. When the application runs, it initially constructs appropriate GUI elements for the specified parameters. These GUI elements are incorporated into a web page, which will be presented to the user. The remainder of this document describes the requirement, configuration and deployment of the application.
+Web applications used for printing typically rely on end user input. In order to prevent malicious parameter inputs, workflow providers have to specify valid parameter ranges for inputs. A suitable way to allow for parameter configuration are spreadsheet files. For this purpose, this repository provides the _GenericGUIApplication_ GUI web application in _code\_examples/Python/app\_generic\_gui_. It allows for interactive parameter specification. When the application runs, it initially constructs appropriate GUI elements for the specified parameters. These GUI elements are incorporated into a web page, which will be presented to the user. The remainder of this document describes the requirements, configuration and deployment of the application.
 
 1 Requirements
 ---
