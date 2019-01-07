@@ -52,7 +52,7 @@ The _app_ directory contains a configuration file for the web site layout parame
 </pageConfiguration>
 ```
 
-#### 2.3 Excel-Sheet for GUI Elements:
+#### 2.3 Excel sheet for GUI Elements:
 The _app_ directory also contains an excel sheet, which lists all gui elements. It allows to specify *element name*, *element type*, *unit of measurement*, *default value*, *min/max values*, *checked* state and the name of the *output parameter* for the workflow manager. The min/max parameters can be used to prevent users from specifying malicious parameters but are not mandatory. The checked state option is only used for checkable elements, i.e., checkboxes and radiobuttons. The unit of measurement option can be used to present the unit, e.g., milimeters, of the parameter to the user. Note that the unit of measurement option is mandatory for radiobuttons, since the application assigns radiobuttons of the same unit to the same group. For an complete example of a valid excel stylesheet checkout the *GUIAppParameters.xlsx* file in the *app* directory.
 
 Currently the application supports the following data types:
