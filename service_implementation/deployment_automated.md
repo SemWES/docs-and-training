@@ -183,7 +183,9 @@ Docker source folder):
 push_docker_image test-service <docker_source_folder>
 ```
 You will see the output of Docker within the CLI, which will automatically
-build, tag, and push the Docker image in the folder you provided.
+build, tag, and push the Docker image in the folder you provided. Note that the
+CLI currently always tags your images with `latest`. If you want to use custom
+tags, you need to use the clfpy services client.
 
 ### 4 Update the service with a service definition
 #### clfpy services client
