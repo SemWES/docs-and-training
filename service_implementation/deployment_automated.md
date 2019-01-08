@@ -46,7 +46,7 @@ Additionally, the CloudFlow Python library clfpy
 (https://github.com/CloudiFacturing/clfpy) comes with a client for servicectl
 for programmatic access as well as with an interactive command-line interface.
 In the examples given here, usage of both the clfpy client and the command-line
-interface will be demonstrated.
+interface (CLI) will be demonstrated.
 
 ### Where are code examples?
 For a minimal example of creating, deploying, monitoring, and deleting a
@@ -123,6 +123,8 @@ Select the services client inside the CLI:
 client services
 ```
 The CLI prompt will change to `user@project – SERVICES: `.
+Note that the CLI allows tab completion of most commands and provides help for
+all commands. Execute `help` for details.
 
 Then, create a new service with the following command:
 ```
