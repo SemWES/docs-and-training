@@ -15,6 +15,7 @@ With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
 ### 2019-01-??: WIP
+* (MINOR) Added documentation of the clfpy CLI where appropriate.
 * (MINOR) Added command-line-interface examples to the [deployment
   manual](./service_implementation/deployment_automated.md).
 * (MINOR) Added input-GUI demo workflow to [demo
