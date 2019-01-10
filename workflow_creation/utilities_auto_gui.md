@@ -52,7 +52,7 @@ XLS_PARAM_SHEET=GUIAppParameters.xlsx
 ```
 
 #### 2.2 Excel Sheet for GUI Elements:
-The _app_ directory also contains an excel sheet, which lists all gui elements.
+The [_app_](../code_examples/Python/app_generic_gui/app) directory also contains an excel sheet, which lists all gui elements.
 It allows to specify *element name*, *element type*, *unit of measurement*, *default value*, 
 *min/max values*, *checked* state and the name of the *output parameter* for the workflow manager. 
 The min/max parameters can be used to prevent users from specifying malicious 
@@ -62,7 +62,7 @@ The unit of measurement option can be used to present the unit, e.g., milimeters
 Note that the unit of measurement option is mandatory for radiobuttons, 
 since the application assigns radiobuttons of the same unit to the same group. 
 For an complete example of a valid excel stylesheet 
-checkout the *GUIAppParameters.xlsx* file in the *app* directory.
+checkout the *GUIAppParameters.xlsx* file in the [_app_](../code_examples/Python/app_generic_gui/app) directory.
 
 Currently the application supports the following data types:
 + **title**: The title of the web page. This shall be set first.
@@ -100,7 +100,9 @@ The listing below shows a complete layout configuration file.
 3 Deployment
 ---
 This section describes the local deployment of the _GenericGUIApplication_.
-Note that this description is only valid for [local deployment](../tutorials/workflows/basics\_service\_registration.md).
+Note that this description is only valid for local deployment.
+For deployment on the CloudFlow platform, see the [deployment manual](../service_implementation/deployment_automated.md).
+
 Before service deployment ensure that docker is installed and the service configuration is correct.
 The deployment of the application just amounts to building and starting the docker container.
 From the directory containing the _GenericGUIApplication_ execute the following:
@@ -116,3 +118,6 @@ The wsdl location of the service evaluates to _http://domain_name/path/to/locati
 When the service is registered, add it to the appropriate worflow.
 
 Finally, connect the outputs of the GUI application with the input ports of the appropriate services.
+
+A demo version of this service is deployed under the URI http://demo/apps/startInputGUI.owl#startInputGUI_Service.
+Furthermore, a demo workflow using this service is available under the name Demo_InputGUI (URI http://demo/workflow/Demo_InputGUI.owl#Demo_InputGUI).
