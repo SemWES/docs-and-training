@@ -14,6 +14,89 @@ the [semantic-versioning](https://semver.org/) scheme. In a nutshell,
 With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
+### 2019-03-29: Version 3.6.2
+* (PATCH) Re-branded "CloudFlow" to "SemWES" throughout the documentation
+
+### 2019-01-14: Version 3.6.1
+* (PATCH) Added note on project names with underscores to the [deployment
+  manual](./service_implementation/deployment_automated.md).
+
+### 2019-01-11: Version 3.6.0
+* (MINOR) Added point-cloud alignment workflow to [demo
+  overview](./infrastructure_overview/demos.md).
+
+### 2019-01-10: Version 3.5.0
+* (MINOR) Added documentation on how to [launch background HPC jobs](./workflow_creation/HPC_background.md)
+
+### 2019-01-10: Version 3.4.0
+* (MINOR) Added code example for Fraunhofer's [input-GUI
+  generation](./code_examples/Python/app_generic_gui)
+  and [corresponding documentation](./workflow_creation/utilities_auto_gui.md).
+
+### 2019-01-08: Version 3.3.0
+* (MINOR) Added documentation of the clfpy CLI where appropriate.
+* (MINOR) Added command-line-interface examples to the [deployment
+  manual](./service_implementation/deployment_automated.md).
+* (MINOR) Added input-GUI demo workflow to [demo
+  overview](./infrastructure_overview/demos.md).
+
+### 2018-12-17: Version 3.2.0
+* (MINOR) Removed deprecated image-converter example and re-wrote info on GSS
+  libraries.
+* (MINOR) Added documentation of [in-service token validation](./service_implementation/advanced_authentication.md)
+* (MINOR) Added [servicectl API documentation](./service_APIs/api_servicectl.md)
+* (MINOR) Created new section on workflow debugging
+* (MINOR) Added readme for the asynchronous-service code example
+* (MINOR) Added overview page of [demo workflows](./infrastructure_overview/demos.md)
+* (PATCH) Updated deployment path and port for debugger code example
+* (PATCH) Removed remaining CAxMan elements from calculator tutorial
+* (PATCH) Added token validation to code examples
+* (PATCH) Removed note on dedicated VMs in [Getting Access](./infrastructure_overview/getting_access.md)
+* (PATCH) Updated table of contents on the main page
+
+### 2018-12-11: Version 3.1.0
+* (MINOR) Updated [refissh API documentation](./service_APIs/api_refissh.md) to
+  reflect latest refissh version
+
+### 2018-12-10: Version 3.0.0
+* (MAJOR) Service deployment is now fully automatic, see the [deployment
+  manual](./service_implementation/deployment_automated.md).
+  Manual deployment on dedicated VMs is now deprecated.
+
+### 2018-12-07: Version 2.2.1
+* (PATCH) Improved logging and updated an endpoint URL in the abortable-waiter
+  Singularity code example
+
+### 2018-11-30: Version 2.2.0
+* (MINOR) Updated [refissh API documentation](./service_APIs/api_refissh.md) to
+  reflect latest refissh version
+
+### 2018-11-29: Version 2.1.1
+* (PATCH) Updated endpoints of the HPC-service Images endpoint for registration
+  of Singularity images.
+
+### 2018-10-31: Version 2.1.0 – Addition of Nvidia support
+* (MINOR) Singularity Nvidia support is now automatically activated when IT4I's
+  `qviz` queue is selected.  See the [HPC-service
+  documentation](./workflow_creation/HPC_service.md) for details.
+
+### 2018-10-15: Version 2.0.0 – Addition of MPI support and Singularity versioning
+* (MAJOR) The HPC service's launch method now has four more documented input
+  parameters, one of them mandatory (`SingularityVersion`). The other three
+  parameters allow the execution of MPI-enabled HPC jobs. See the [HPC-service
+  documentation](./workflow_creation/HPC_service.md) for details.
+* (MAJOR) Updated the [refissh API documentation](./service_APIs/api_refissh.md)
+  to reflect MPI support and the change in mandatory parameters.
+* (MINOR) Added basic information on [how to create MPI-ready Singularity
+  images](./service_implementation/advanced_hpc_mpi.md).
+
+### 2018-09-26: Version 1.3.3 – Clarify use of /service in Singularity
+* (PATCH) Added clarification of the use of the /service mount in Singularity
+  images. See article on [Singularity basics](./service_implementation/basics_singularity.md).
+
+### 2018-09-12: Version 1.3.2 – Document wsdl peculiarity of Python spyne
+* (PATCH) Added documentation of the peculiar mechanism of wsdl caching when
+  using the Python spyne library. See article on [manual service deployment](./service_implementation/deployment_manual.md).
 
 ### 2018-08-07: Version 1.3.1 – Fixes refissh API docs
 * (PATCH): Fixed parameter list for job submission in the [refissh API](./service_API/api_refissh.md).

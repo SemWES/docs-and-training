@@ -5,7 +5,7 @@ run with root privileges (which cannot be allowed on an HPC cluster for obvious
 security reasons), Singularity containers run only with the rights of the user
 that executes the container.
 
-On the CloudFlow platform, all software that should be run on an HPC cluster
+On the SemWES platform, all software that should be run on an HPC cluster
 _has to be packaged in a Singularity image_. This packaging involves the
 following steps:
 
@@ -57,15 +57,18 @@ basis for building the Singularity image.
 
 Under `%setup`, two directories are created: `/scratch` and `/service`. These
 together with `/home` serve as mount points for HPC file storage paths when the
-image is executed on the HPC cluster by the CloudFlow HPC service. `/home` and
+image is executed on the HPC cluster by the SemWES HPC service. `/home` and
 `/scratch` will be mounted to the `home` and `scratch` folders on the HPC
 storage which are accessible also by GSS (using, for example, the File Browser
 workflow). They thus allow your packaged application to access all files on the
 HPC storage which are available via GSS. `/service` will be used by your
-packaged application to communicate status reports to the HPC service.
+packaged application to communicate status reports to the HPC service. It can
+furthermore be used for cross-node communication and temporary files which are
+_not_ supposed to be visible to the user, since `/service` is not exposed via
+GSS.
 
 **Important:** In your own recipes, you _always have to create these
-mountpoints_. If you don't, your image will _not_ work on the CloudFlow
+mountpoints_. If you don't, your image will _not_ work on the SemWES
 platform.
 
 Finally, the `%files` section of the recipe tells to copy the local folder `app`
@@ -99,8 +102,8 @@ delete an existing image before rebuilding.
 Before we describe how to execute and test our Singularity image, let's have a
 look at how to communicate status and result reports back to the HPC service.
 
-When a Singularity image is executed as part of a CloudFlow workflow, it is the
-CloudFlow HPC service which actually logs in to the HPC login node and executes
+When a Singularity image is executed as part of a SemWES workflow, it is the
+SemWES HPC service which actually logs in to the HPC login node and executes
 the Singularity image (more on that later). While the HPC service will use the
 HPC cluster's queueing system to monitor the execution status of the Singularity
 image, the application running inside this image still needs to communicate
@@ -190,16 +193,16 @@ set up. However, a few things should be kept in mind:
   GSS references to those files into the results file.
 
 ## Testing Singularity images locally or on the HPC login node
-Before registering a built Singularity image for usage on the CloudFlow
+Before registering a built Singularity image for usage on the SemWES
 platform, it is advised to test locally that it works as expected. Therefore,
 you can either execute the image locally or copy it onto a HPC login node using
 your personal credentials and execute it there.
 
 ### Local testing
 To test an image under circumstances as close as possible to those when running
-as part of a CloudFlow workflow, please use the following call command:
+as part of a SemWES workflow, please use the following call command:
 ```bash
-singularity exec --cleanenv \
+singularity exec \
     -H <HOME>:/home -B <SCRATCH>:/scratch -B <SERVICE>:/service \
     <IMAGE> <COMMAND> <PARAMETERS>
 ```
@@ -214,8 +217,8 @@ In this command, replace the following placeholders:
 * `<COMMAND>` by the bash command to execute _inside_ the Singularity image
 * `<PARAMETER>` by any parameters to pass to the command to be executed
 
-_Side note:_ When you later use your Singularity image inside a CloudFlow 
-workflow, the CloudFlow HPC service will execute the exact same command for 
+_Side note:_ When you later use your Singularity image inside a SemWES 
+workflow, the SemWES HPC service will execute the exact same command for 
 you. Some of the parameters listed above will be automatically set for you 
 (such as the home and scratch directories), some you will have to provide as
 input to the HPC service.
@@ -233,7 +236,7 @@ mkdir temp_home
 mkdir temp_scratch
 mkdir temp_service
 
-singularity exec --cleanenv \
+singularity exec \
     -H $(pwd)/temp_home:/home \
     -B $(pwd)/temp_scratch:/scratch \
     -B $(pwd)/temp_service:/service \
@@ -254,19 +257,20 @@ debugging and logs](./basics_hpc_logs.md) for details.
 
 ### Testing on an HPC cluster
 If you'd like to test an image directly on an HPC cluster, upload it to the
-login node and execute `ml Singularity` to load the Singularity module before
-making the above calls.
+login node and execute `ml Singularity/<version>` to load the Singularity module
+before making the above calls. Make sure that the loaded version fits to your
+image. You can list all available modules via `ml av`.
 
 ## Uploading and registering a Singularity image
 Once you have successfully developed and tested a Singularity image, you need
-to register it with the CloudFlow HPC service before you can start using it in
-a CloudFlow workflow. As registration can only happen from files which are
+to register it with the SemWES HPC service before you can start using it in
+a SemWES workflow. As registration can only happen from files which are
 already saved on an HPC cluster's file storage, you need to upload your image
 via GSS first.
 
 _Note:_ For each HPC cluster available in CloudiFacturing (currently, the Anselm
 and the Salomon cluster operated by IT4I), an individual instance of the
-CloudFlow HPC service is running. This allows it to restrict
+SemWES HPC service is running. This allows it to restrict
 simulations/calculations to certain clusters by means of the workflow editor.
 However, it also means that you need to upload and register your image with
 every HPC service it should be run on.
@@ -279,12 +283,35 @@ To upload your image to GSS, you can use one of the following methods:
   (https://github.com/CloudiFacturing/client_libs)
 
 ### Registering your image
+#### ... with the clfpy CLI
+The easiest way of registering your image is by using the command-line
+interface (CLI) of the [`clfpy` Python
+library](https://github.com/CloudiFacturing/clfpy). Make sure you have the
+latest version of the library installed (`pip install --upgrade clfpy`) and
+start the CLI (`clfpy_cli` from anywhere in a console).
+
+You now have two options for registering an image:
+1. From within the GSS client (`client gss`), navigate to the folder with the
+   image you want to register and execute `img_register FILENAME`. The image
+   will then be registered under the same name as the source file name.
+2. From within the images client (`client images`), execute `register GSS_URI
+   TARGET_NAME`.  Here, `GSS_URI` is the GSS URI of the image saved on GSS
+   (`it4i_anselm://home/my_image.simg` or similar) and `TARGET_NAME` is the
+   name the registered image should have. Remember the `.simg` ending for the
+   target name.
+
+#### ... programmatically with the clfpy library
+To programmatically register images, use the ImagesClient client of the clfpy
+library. In `clfpy/tests/test_hpc.py` of the library source code, you'll find a
+working example of how to upload and register an image.
+
+#### ... with the Images SOAP API
 To register an image which is available on the HPC-cluster storage, you need to
-use the Images SOAP API of the CloudFlow HPC service(s). Descriptions of the
+use the Images SOAP API of the SemWES HPC service(s). Descriptions of the
 Images web services for the available clusters are found under the following
 URLs:
-* IT4I Anselm cluster: `https://api.hetcomp.org/hpc_anselm/Images?wsdl`
-* IT4I Salomon cluster: `https://api.hetcomp.org/hpc_salomon/Images?wsdl`
+* IT4I Anselm cluster: `https://api.hetcomp.org/hpc-4-anselm/Images?wsdl`
+* IT4I Salomon cluster: `https://api.hetcomp.org/hpc-4-salomon/Images?wsdl`
 
 Use these URLs to create SOAP clients and call their `registerImage()` method
 with the following parameters:
@@ -292,14 +319,9 @@ with the following parameters:
 * `image_name`: name to use for the registered image (use this for versioning)
 * `image_source`: GSS URI of the image to register
 
-_Note:_ The [`clfpy` Python library](https://github.com/CloudiFacturing/clfpy)
-for CloudFlow platform access includes a client for accessing the Images API of
-the HPC service. In `clfpy/tests/test_hpc.py`, you'll also find a working 
-example of how to upload and register an image.
-
 ## How to move on
 Once you have successfully registered an image with the HPC service, you can use
-it inside your CloudFlow workflows. Head over to the [HPC-service
+it inside your SemWES workflows. Head over to the [HPC-service
 overview](../workflow_creation/HPC_service.md) to learn how to do just that.
 
 The waiter example shown here is very basic and probably won't be enough to

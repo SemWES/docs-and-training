@@ -2,8 +2,8 @@ Python example for an HPC pre-processor
 ========================================
 This is a sample preprocessor service for the HPC launcher.
 
-It is currently deployed for the IT4I Anselm cluster under `http://sintef/sync/waiter_prep_ans.owl#waiter_prep_Service` and used in the
-workflow `http://workflows/sintef/HpcWaiterAnselm.owl#HPC_Waiter_Anselm`.
+It is currently deployed for the IT4I Anselm cluster under `http://demo/sync/hpcprepWaiter.owl#hpcprepWaiter_Service` and used in the
+demo workflow `http://demo/workflow/Demo_HPC_Abortable_Waiter_prep.owl#Demo_HPC_Abortable_Waiter_prep`.
 
 ## Prerequisites
 To build, run, and test this  service, you only need to have Docker
@@ -29,9 +29,9 @@ values if needed.
 To compile service source code, pack it into a Docker container, and run the
 container, run
 ```
-./rebuildandrun.sh <port>
+./rebuildandrun.sh
 ```
-Choose a port number that is available on your machine.
+The service will listen on port 80 of your machine.
 
 On the first run, this might take a while since the base container images need
 to be downloaded and dependencies need to be installed. Subsequent builds will
@@ -42,7 +42,7 @@ returns immediately and that logs are not immediately visible.
 
 Alternatively, run the container interactively via:
 ```
-docker run -p <port>:80 --env-file=env waiterprep
+docker run -p 80:80 --env-file=env waiterprep
 ```
 Again, choose a fitting port number
 

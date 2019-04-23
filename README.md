@@ -1,8 +1,8 @@
-# Service and workflow development for the CloudFlow platform stack in CloudiFacturing
-Welcome to the CloudFlow/CloudiFacturing service-development resources!
+# Service and workflow development for the SemWES platform stack in CloudiFacturing
+Welcome to the SemWES/CloudiFacturing service-development resources!
 
 This repository is meant to be a center for documentation relevant for everyone
-who develops services and workflows on the CloudFlow platform stack in
+who develops services and workflows on the SemWES platform stack in
 the CloudiFacturing project. Here, you will find everything from high-level
 descriptions of the concepts behind the platform to step-by-step
 tutorials for advanced topics in service development.
@@ -12,9 +12,11 @@ tutorials for advanced topics in service development.
 - [Contributing](#contributing)
 - [Platform overview](#platform-overview)
 - [Service implementation: concepts, examples, tutorials](#service-implementation-concepts-examples-tutorials)
-  - [CloudFlow Synchronous services](#cloudflow-synchronous-services)
-  - [CloudFlow Aynchronous services](#cloudflow-aynchronous-services)
-  - [CloudFlow Applications](#cloudflow-applications)
+  - [General concepts](#general-concepts)
+  - [SemWES Synchronous services](#semwes-synchronous-services)
+  - [SemWES Aynchronous services](#semwes-aynchronous-services)
+  - [SemWES Applications](#semwes-applications)
+  - [Service deployment](#service-deployment)
   - [SOAP services](#soap-services)
   - [File access](#file-access)
   - [Using HPC resources](#using-hpc-resources)
@@ -23,16 +25,17 @@ tutorials for advanced topics in service development.
   - [Basic workflow editing](#basic-workflow-editing)
   - [Using the HPC service](#using-the-hpc-service)
   - [Available utility services](#available-utility-services)
+  - [Workflow debugging](#workflow-debugging)
   - [Advanced topics](#advanced-topics)
 - [Reference documentation of platform services](#reference-documentation-of-platform-services)
 
 ## Documentation version 
-Current documentation version: `1.3.1`
+Current documentation version: `3.6.2`
 
 See the [Changelog](CHANGELOG.md) for versioning details.
 
 ## Contributing
-Everyone is welcome to contribute to this documentation center. Typos,
+Everyone is *welcome* to contribute to this documentation center. Typos,
 clarifications, interesting code examples, or also just questions – anything is
 valuable. To contribute, choose one of the following options:
 * Fork the repository, add your changes and create a pull request.
@@ -41,44 +44,51 @@ valuable. To contribute, choose one of the following options:
   (discouraged, rather use one of the options above).
 
 ## Platform overview
-New to the CloudFlow platform? Read all about its concepts and background here.
+New to the SemWES platform? Read all about its concepts and background here.
 
 * [Getting access](infrastructure_overview/getting_access.md): Need access to
-  the CloudFlow platform in CloudiFacturing? Look here.
-  
-* [Workflows and services in the CloudFlow cloud – an overview](infrastructure_overview/workflows_and_services.md):
-  Gives a compact overview over the concepts behind CloudFlow and what services
+  the SemWES platform in CloudiFacturing? Look here.
+
+* [Demos](infrastructure_overview/demos.md): If you want to get your hands
+  dirty immediately and try out some demo workflows on the platform, look here.
+
+* [Users, projects, and authentication](./infrastructure_overview/authentication.md):
+  Gives a short overview of how user authentication and data-access restriction
+  works on the SemWES platform.
+
+* [Workflows and services in the SemWES cloud – an overview](infrastructure_overview/workflows_and_services.md):
+  Gives a compact overview over the concepts behind SemWES and what services
   and workflows are and how they are executed. Also explains the nomenclature
   used in this repository.
 
-* [The CloudFlow service types](infrastructure_overview/service_types.md):
+* [The SemWES service types](infrastructure_overview/service_types.md):
   Description and requirements of synchronous services, asynchronous services,
   and applications. Read this if you're wondering what kind of service you
   need to develop for a certain use case.
 
 * [Accessing cloud storage: Generic Storage Services (GSS)](infrastructure_overview/storage.md):
-  On the CloudFlow platform, different cloud storages can be accessed in a
-  simple, unified way. Learn about the basic concepts of the CloudFlow
+  On the SemWES platform, different cloud storages can be accessed in a
+  simple, unified way. Learn about the basic concepts of the SemWES
   Generic Storage Services and the available storage solutions in
   CloudiFacturing.
 
 ## Service implementation: concepts, examples, tutorials
-All workflows in the CloudFlow platform are basically a series of calls to
+All workflows in the SemWES platform are basically a series of calls to
 individual web services. This section provides information on how to develop
-such web services in a way that they can be registered in the CloudFlow
+such web services in a way that they can be registered in the SemWES
 platform.
 
 All documentation here deals with things done "in code" (as opposed to via
 the graphical tools provided on the portal).
 
 ### General concepts
-* (new in v1.3.0) [Available parameters](./service_implementation/available_parameters.md):
+* [Available parameters](./service_implementation/available_parameters.md):
   The workflow manager offers a set of "global" parameters which are available
   to every service. Here, we take a closer look at these parameters and their
   main use cases.
 
-### CloudFlow Synchronous services
-  * Check out the [CloudFlow service types](infrastructure_overview/service_types.md)
+### SemWES Synchronous services
+  * Check out the [SemWES service types](infrastructure_overview/service_types.md)
     for a high-level description of synchronous services and their required
     interface.
   * [Code example (Python): synchronous service](code_examples/Python/sync_calculator):
@@ -91,8 +101,8 @@ the graphical tools provided on the portal).
     starting point in the service development.
 
 
-### CloudFlow Aynchronous services
-  * Check out the [CloudFlow service types](infrastructure_overview/service_types.md)
+### SemWES Aynchronous services
+  * Check out the [SemWES service types](infrastructure_overview/service_types.md)
     for a high-level description of asynchronous services and their required
     interface.
   * [Code example (Python): Waiter](code_examples/Python/async_waiter):
@@ -101,31 +111,25 @@ the graphical tools provided on the portal).
     This tutorial guides you through the deployment steps of a simple
     asynchronous service. Starting from a simply Python script representing a
     long-running computation, we will wrap an asynchronous web service around it
-    which can be deployed in the CloudFlow infrastructure stack.
+    which can be deployed in the SemWES infrastructure stack.
 
 
-### CloudFlow Applications
-  * Check out the [CloudFlow service types](infrastructure_overview/service_types.md)
+### SemWES Applications
+  * Check out the [SemWES service types](infrastructure_overview/service_types.md)
     for a high-level description of applications and their required interface.
   * [Code example (Python): Dialog](code_examples/Python/app_simple):
     Simplest possible example application containing a one-button dialog.
-  * (new in v1.3.0) [Code example (Python): Debugger](code_examples/Python/app_debugger):
+  * [Code example (Python): Debugger](code_examples/Python/app_debugger):
     Debug application for workflows; pauses a workflow and displays parameter
     contents.
 
 
 ### Service deployment
   * [Service-deployment concept](service_implementation/deployment_strategy.md):
-  Learn about the CloudFlow deployment strategy here.
+  Learn about the SemWES deployment strategy here.
 
-  * For development: [Manual service deployment on dedicated VMs](service_implementation/deployment_manual.md):
-    During service development, close control over the deployment of the Docker
-    containers may be required. Read here how to do this on a dedicated virtual
-    machine.
-
-  * (To be written) For production: [Automated service deployment](service_implementation/deployment_automated.md):
-    Once a service is fully developed, deployment should be moved to an 
-    automated way, which is described here.
+  * [Service-deployment manual](service_implementation/deployment_automated.md):
+    Describes how services can be deployed in SemWES
 
 
 ### SOAP services
@@ -134,27 +138,25 @@ the graphical tools provided on the portal).
   through the workflow manager.
 
 ### File access
-  * [Tutorial: Low-level file access (showcased via a simple image converter)](tutorials/services/python_imageconverter.md):
-    Learn how to programmatically access files via GSS by implementing a simple
-    synchronous image conversion service. This tutorial also teaches you an
-    understanding of how GSS works, but it won't show you production-quality
-    code.
+  * If you haven't done so already, it is recommended to read the general
+    principles of [accessing cloud storage](infrastructure_overview/storage.md)
+    on the SemWES platform.
   * [High-level file access using GSS libraries](service_implementation/basics_gss_libraries.md):
-    In practice, one most likely wants to hide the interplay of SOAP and REST
-    calls when accessing GSS behind some kind of library. This article gives
-    an overview over existing libraries and their usage.
-    
+    While it is perfectly possible to directly interact with the GSS API, it is
+    highly recommended to use the provided GSS client libraries for file access
+    in SemWES. This article gives an overview over existing libraries and
+    their usage.
 
 ### Using HPC resources
-  * [HPC access through the CloudFlow platform](service_implementation/basics_hpc.md):
-    The CloudFlow platform abstracts access of specific HPC resources with a
+  * [HPC access through the SemWES platform](service_implementation/basics_hpc.md):
+    The SemWES platform abstracts access of specific HPC resources with a
     generic API, making it possible to run computations on different HPC
     resources without any change to the computation code. This article explains
     the concepts and technical background of this solution.
 
   * [Packaging software in Singularity images](service_implementation/basics_singularity.md):
     All software that should be run on the HPC resources accessible through the
-    CloudFlow platform must be wrapped into Singularity images which are then
+    SemWES platform must be wrapped into Singularity images which are then
     executed as isolated containers on an HPC cluster. Learn how to create,
     upload, and register such images in this article.
 
@@ -164,12 +166,12 @@ the graphical tools provided on the portal).
     how to set up a Singularity image for this kind of communication.
 
   * [Debugging HPC applications](service_implementation/basics_hpc_logs.md):
-    Debugging HPC applications in CloudFlow can be difficult due to many
+    Debugging HPC applications in SemWES can be difficult due to many
     layers of abstraction between the running application and the user. This
     article gives some hints on debugging and loggin.
 
   * [Singularity and MPI applications](service_implementation/advanced_hpc_mpi.md):
-    (not written yet) Learn how to prepare your Singularity image for parallel
+    Learn how to prepare your Singularity image for parallel
     execution using MPI.
 
   * [GPU support for Singularity images](service_implementation/advanced_hpc_gpu.md):
@@ -193,6 +195,10 @@ hooked up to make a workflow. This section deals with all things done
 "graphically" via the tools provided on the portal.
 
 ### Basic workflow editing
+* Don't forget to have a look at the [demo
+  workflows](./infrastructure_overview/demos.md)
+  to learn from some pre-defined workflow examples.
+
 * [Tutorial: Overview over the portal GUI](tutorials/workflows/basics_portal_overview.md):
   In this tutorial you will get to know the portal GUI, start a workflow and
   inspect its results.
@@ -203,7 +209,7 @@ hooked up to make a workflow. This section deals with all things done
   
 * [Tutorial: Registration of new services](tutorials/workflows/basics_service_registration.md):
   Any newly created service needs to be registered properly to be usable in the
-  CloudFlow platform. Learn about all details and caveats of service
+  SemWES platform. Learn about all details and caveats of service
   registration here.
 
 * [Upgrading services](workflow_creation/service_upgrades.md): 
@@ -217,13 +223,17 @@ hooked up to make a workflow. This section deals with all things done
   execute Singularity images on the available HPC resources.
 
 * [Converting from GSS URIs to file paths and back](workflow_creation/HPC_gss_conversion.md):
-  Files and folders are handled using GSS URIs within the CloudFlow 
+  Files and folders are handled using GSS URIs within the SemWES 
   platform, but on an HPC cluster, absolute paths are required. Learn how
   to convert between the two here.
 
 * [Pre- and post-processor services](workflow_creation/HPC_prepost.md):
   Explains how one can interface with the generic HPC service by writing pre-
   and post-processor services.
+
+* [Launching HPC jobs in the background](workflow_creation/HPC_background.md):
+  Explains how HPC jobs can be launched in the background, such that other
+  parts of the workflow can run in parallel.
 
 ### Available utility services
 * [File selection using the FileChooser service](workflow_creation/utilities_filechooser.md):
@@ -239,14 +249,16 @@ hooked up to make a workflow. This section deals with all things done
   Want to show some HTML during a workflow? Need a user decision somewhere inside
   the workflow? DFKI's utility suite offers ready-made services just for that.
 
-* (new in v1.3.0) [Parameter debugger](code_examples/Python/app_debugger/README.md):
+### Workflow debugging
+
+* [Parameter debugger](code_examples/Python/app_debugger/README.md):
   This simple application offers the option to pause a workflow and display any
   parameters that are currently in use. Great for debugging failing workflows
   or services. Offered as a code example with complete source code.
 
 ### Advanced topics
 * [Using workflows inside workflows](workflow_creation/advanced_workflow_nesting.md):
-  One of the great strengths of the CloudFlow workflow concepts is that one can
+  One of the great strengths of the SemWES workflow concepts is that one can
   use complete workflows as services inside another workflow. Learn about this
   workflow nesting here.
 
@@ -262,3 +274,4 @@ have a look at our API references:
 * [Authentication manager](service_APIs/api_authentication.md)
 * [GSS](service_APIs/api_gss.md)
 * [refissh](service_APIs/api_refissh.md)
+* [servicectl](service_APIs/api_servicectl.md)

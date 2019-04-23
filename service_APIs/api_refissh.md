@@ -4,8 +4,8 @@ refissh is a web service which provides management of files, Singularity
 images, and HPC jobs through an SSH server (typically an HPC provider's login
 node), hidden behind a REST API.
 
-refissh is part of the CloudFlow infrastructure stack and was developed with
-the CloudiFacturing project in mind. It therefore relies on the CloudFlow
+refissh is part of the SemWES infrastructure stack and was developed with
+the CloudiFacturing project in mind. It therefore relies on the SemWES
 authentication services for user authentication.
 
 Quick links to API functions:
@@ -47,22 +47,142 @@ It is further assumed that `$URL` contains the refissh deployment URL.
 it is generally _not_ necessary to interact with any of the refissh APIs. 
 Instead, high-level services such as GSS or the HPC service should be used.
 
-
 ## Files API
 
 ### `HEAD $URL/files/some/file/or/folder` : get resource type
-Returns the resource type of the given path, which can be `FILE`, `FOLDER`, or
-`NOTEXIST`.
+Returns the resource type of the given path as a plain-text string, which can
+be `FILE`, `FOLDER`, or `NOTEXIST`.
 
 #### Status codes:
 * *200* if resource is a file
 * *204* if resource is a folder
 * *404* if resource doesn't exist
 
-### `GET $URL/files/some/folder` : list directory contents
+### `GET $URL/files/some/folder`: list directory contents
 Returns a list of the contents of the given resource path, which must be a
 folder. The returned list is a json representation of a list of GSS
 ResourceInformation objects.
+
+#### URL parameters:
+* `view`: optional parameter to define the amount of information to be included
+  in the resource-information objects, set to `full` (`...?view=full`) to get
+  file size and date of last modification
+
+#### Status codes:
+* *200* if successful
+* *404* if resource doesn't exist
+
+#### Example for the IT4I Anselm cluster:
+*Request*:
+```
+curl -H "X-Auth-Token: $tk" $URL/files/home/singularity_images
+```
+
+*Response*:
+```json
+[
+    {
+        "visualName": "register_points_with_model.simg",
+        "uniqueName": "it4i_anselm://home/singularity_images/register_points_with_model.simg",
+        "type": "FILE",
+        "queryForName": false,
+        "createDescription": {
+            "supported": false
+        },
+        "readDescription": {
+            "supported": true,
+            "httpMethod": "GET",
+            "headers": [
+                {
+                    "key": "X-Auth-Token",
+                    "value": "..."
+                }
+            ],
+            "sessionTokenField": "Deprecated",
+            "url": "https://api.hetcomp.org/refissh-4-anselm/files/home/singularity_images/home/singularity_images/register_points_with_model.simg"
+        },
+        "updateDescription": {
+            "supported": true,
+            "httpMethod": "PUT",
+            "headers": [
+                {
+                    "key": "X-Auth-Token",
+                    "value": "..."
+                }
+            ],
+            "sessionTokenField": "Deprecated",
+            "url": "https://api.hetcomp.org/refissh-4-anselm/files/home/singularity_images/home/singularity_images/register_points_with_model.simg"
+        },
+        "deleteDescription": {
+            "supported": true,
+            "httpMethod": "DELETE",
+            "headers": [
+                {
+                    "key": "X-Auth-Token",
+                    "value": "..."
+                }
+            ],
+            "sessionTokenField": "Deprecated",
+            "url": "https://api.hetcomp.org/refissh-4-anselm/files/home/singularity_images/home/singularity_images/register_points_with_model.simg"
+        },
+        "metaReadDescription": {
+            "supported": true,
+            "httpMethod": "HEAD",
+            "headers": [
+                {
+                    "key": "X-Auth-Token",
+                    "value": "..."
+                }
+            ],
+            "sessionTokenField": "Deprecated",
+            "url": "https://api.hetcomp.org/refissh-4-anselm/files/home/singularity_images/home/singularity_images/register_points_with_model.simg"
+        }
+    },
+    {
+        "visualName": "archive",
+        "uniqueName": "it4i_anselm://home/singularity_images/archive",
+        "type": "FOLDER",
+        "queryForName": false,
+        "createDescription": {
+            "supported": false
+        },
+        "readDescription": {
+            "supported": false
+        },
+        "updateDescription": {
+            "supported": false
+        },
+        "deleteDescription": {
+            "supported": true,
+            "httpMethod": "DELETE",
+            "headers": [
+                {
+                    "key": "X-Auth-Token",
+                    "value": "..."
+                }
+            ],
+            "sessionTokenField": "Deprecated",
+            "url": "https://api.hetcomp.org/refissh-4-anselm/files/home/singularity_images/home/singularity_images/archive"
+        },
+        "metaReadDescription": {
+            "supported": true,
+            "httpMethod": "HEAD",
+            "headers": [
+                {
+                    "key": "X-Auth-Token",
+                    "value": "..."
+                }
+            ],
+            "sessionTokenField": "Deprecated",
+            "url": "https://api.hetcomp.org/refissh-4-anselm/files/home/singularity_images/home/singularity_images/archive"
+        }
+    }
+]
+```
+
+### `GET $URL/files/some/file/or/folder?view=resinfo` : get resource information
+Returns the resource information for a single file or folder. (Result is
+identical to a single element of the folder listing shown above.)
 
 #### Status codes:
 * *200* if successful
@@ -81,18 +201,18 @@ application/directory"` as an additional header with the call.
 
 #### Status codes:
 * *201* if successful
-* *400* if no `"Content-Type"` header was given
 * *405* if folder already exists
 * *405* if parent folder doesn't exist or if POST was attempted in root
   folder and root folder is configured immutable
 
 ### `POST $URL/files/non/existing/file` : upload a file
-Expects the file to be uploaded as the request data in binary form. Also pass
-a fitting `"Content-Type"` header with the call.
+Expects the file to be uploaded as the request data in binary form. Also pass a
+fitting `"Content-Type"` header with the call. Use `"Content-Type:
+application/octet-stream"` for binary data. If no such header is given,
+`application/octet-stream` is assumed.
 
 #### Status codes:
 * *201* if successful
-* *400* if no `"Content-Type"` header was given
 * *405* if file already exists
 * *405* if parent folder doesn't exist or if POST was attempted in root
   folder and root folder is configured immutable
@@ -106,7 +226,8 @@ doesn't exist.
 * *405* if file doesn't exist
 
 ### `DELETE $URL/files/already/existing/file/or/folder` : delete a file/folder
-Deletes the file or folder at the given path. Will delete non-empty folders.
+Deletes the file or folder at the given path. Will also delete non-empty
+folders including their content.
 
 #### Status codes:
 * *204* if successful
@@ -134,17 +255,38 @@ variables.
 ### `POST $URL/jobs/<service_ID>` : start a new job
 For a unique and not yet known service ID, a new job is started on the scheduler.
 The request data has to contain the following json-formatted job specifications:
-```
+```json
 {
-"image_name": "hetcomp/sing_test",
-"commandline": "/runscript.sh",
-"parameters": "nothing important",
+"image_name": "my_image.simg",
+"commandline": "python",
+"parameters": "/app/start.py par1 par2",
 "queue": "qexp",
 "N_nodes": 1,
 "N_cores": 24,
-"max_runtime": 5
+"max_runtime": 5,
+"singularity_version": "2.4.2"
 }
 ```
+`singularity_version` indicates which version of the Singularity module should
+be loaded on the HPC cluster. Obviously, only available version numbers should
+be indicated here.
+
+To start an MPI-enabled job, the following three additional parameters have to
+be provided:
+```json
+{
+...
+"MPI_lib": "OpenMPI/2.1.1-GCC-6.3.0-2.27",
+"N_mpiprocs": 16,
+"MPI_np": 16
+...
+}
+```
+* `MPI_lib` is the full name of the MPI module to be loaded on the HPC cluster.
+* `N_mpiprocs` is the number of MPI processes to reserve per reserved cluster 
+  node.
+* `MPI_np` is the total number of MPI processes to start. Usually, this number
+  equals `N_nodes * N_mpiprocs`.
 
 #### Status codes:
 * *200* if successful
@@ -181,6 +323,7 @@ message.
 * *200* if successful
 * *400* if json is malformed
 * *405* if job state is not RUNNING
+
 
 ### `DELETE $URL/jobs/<service_ID>` : abort job
 Stops execution of a running job.
@@ -274,23 +417,23 @@ folder.
 export URL=127.0.0.1:5000/refissh
 
 # List files and folders
-curl -H "X-Auth-Header: $token" -X GET $URL/files/
-curl -H "X-Auth-Header: $token" -X GET $URL/files/some_folder
+curl -H "X-Auth-Token: $token" -X GET $URL/files/
+curl -H "X-Auth-Token: $token" -X GET $URL/files/some_folder
 
 # Download a file
-curl -H "X-Auth-Header: $token" -X GET -o out_file.file $URL/files/some_file.file
+curl -H "X-Auth-Token: $token" -X GET -o out_file.file $URL/files/some_file.file
 
 # Create a folder
-curl -H "X-Auth-Header: $token" -X POST -H “Content-Type: application/directory” $URL/files/some/nonexisting/folder
+curl -H "X-Auth-Token: $token" -X POST -H “Content-Type: application/directory” $URL/files/some/nonexisting/folder
 
 # Upload a new file, here, a png image
-curl -H "X-Auth-Header: $token" -X POST -H “Content-Type: image/png” --data-binary @image.png $URL/files/existing/folder/image.png
+curl -H "X-Auth-Token: $token" -X POST -H “Content-Type: image/png” --data-binary @image.png $URL/files/existing/folder/image.png
 
 # Update an existing file
-curl -H "X-Auth-Header: $token" -X PUT -H “Content-Type: image/png” --data-binary @image.png $URL/files/existing/folder/image.png
+curl -H "X-Auth-Token: $token" -X PUT -H “Content-Type: image/png” --data-binary @image.png $URL/files/existing/folder/image.png
 
 # Delete a file or folder
-curl -H "X-Auth-Header: $token" -X DELETE $URL/files/existing/folder/or/file.file
+curl -H "X-Auth-Token: $token" -X DELETE $URL/files/existing/folder/or/file.file
 ```
 
 ## Jobs API
@@ -301,7 +444,7 @@ export URL=127.0.0.1:5000/refissh
 curl -H "X-Auth-Token: $token" -X GET $URL/jobs/
 
 # Start a new job with a new unique service ID
-curl -H "X-Auth-Token: $token" -X POST -d @payload $URL/jobs/<service_ID>
+curl -H "X-Auth-Token: $token" -H "Content-Type: application/json" -X POST -d @payload $URL/jobs/<service_ID>
 
 # Get the status of a currently running job
 curl -H "X-Auth-Token: $token" -X GET $URL/jobs/<service_ID>

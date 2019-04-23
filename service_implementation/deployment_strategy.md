@@ -1,7 +1,7 @@
-# The CloudFlow service-deployment strategy
+# The SemWES service-deployment strategy
 
 ## Motivation to use Docker
-Services in the CloudFlow platform are deployed using Docker containers. Why
+Services in the SemWES platform are deployed using Docker containers. Why
 that? Consider you're developing a service, and you use some of the newest
 features of that fancy library Foo version 9. At the same time, the VM your
 service should be deployed on has only Foo version 8.3 available in its
@@ -38,7 +38,5 @@ This makes it much fast than virtualizations, and starting a Docker container
 is often as good as instantaneous.
 
 ## How to deploy
-The exact deployment procedure is done in two ways: manually during development,
-where being "close to the code" is important, and automated for production use.
-Read further on [manual](./deployment_manual.md) and
-[automated](./deployment_automated.md) deployment.
+The exact deployment procedure is described in the [service-deployment
+manual](./deployment_automated.md).
