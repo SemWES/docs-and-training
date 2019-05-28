@@ -45,4 +45,4 @@ __Log out__
 1. If you click on the workflow's entry you will be redirected to the result page, where you can inspect the results of your workflow again.
 
 ## Conclusion
-Congratulations, you have finished the first tutorial. You should now be able to start workflows and examine their status and result
+Congratulations, you have finished this tutorial. You should now be able to start workflows and examine their status and result
