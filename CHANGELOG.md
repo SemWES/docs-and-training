@@ -14,6 +14,27 @@ the [semantic-versioning](https://semver.org/) scheme. In a nutshell,
 With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
+### 2019-05-28: Version 3.9.1
+* (PATCH) Added a link to the queues available at IT4I.
+* (PATCH) Clarified Singularity image registration.
+
+### 2019-05-28: Version 3.9.0
+* (MINOR) Added two more code examples for the Genova code camp.
+
+### 2019-05-24: Version 3.8.0
+* (MINOR) Re-organized the [deployment
+  manual](./service_implementation/deployment_automated.md) to make it easier
+  to follow.
+
+### 2019-05-23: Version 3.7.1
+* (PATCH) Bugfix in all Python code examples: `rebuildandrun.sh` doesn't result
+  in a running container, logs say that `/etc/nginx/conf.d/nginx.conf` is not
+  available.
+
+### 2019-04-26: Version 3.7.0
+* (MINOR) Extended documentation of the point-cloud alignment workflow in the
+  [demo overview](./infrastructure_overview/demos.md).
+
 ### 2019-03-29: Version 3.6.2
 * (PATCH) Re-branded "CloudFlow" to "SemWES" throughout the documentation
 
