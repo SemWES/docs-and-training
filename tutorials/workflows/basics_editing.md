@@ -4,16 +4,16 @@ In this part of the tutorial we will load a workflow, edit it, and finally save 
 
 1. To start, navigate to the __Workflow editor__.
 
-![wfe_services.PNG](img_editing/navigation.PNG)
+![Navigation](img_editing/navigation.PNG)
 
 - The upper part of the page provides the means to add services, and to remove services and workflows.
 
-![wfe_services.PNG](img_editing/wfe_services.PNG)
+![Service Management GUI](img_editing/wfe_services.PNG)
 
 - The lower parts feature the tools to load, edit and save workflows.
 2.  Scroll down until the whole lower section is visible.
 
-![wfe.PNG](img_editing/wfe.PNG)
+![Workflow Editor GUI](img_editing/wfe.PNG)
 
 ## The Workflow Editor
 The Workflow Editor provides means to create sophisticated workflows:
@@ -22,7 +22,7 @@ The Workflow Editor provides means to create sophisticated workflows:
  - The graphical editor provides an intuitive interface to arrange, connect and edit services.
  
 ## Step 1 - Load workflow
-![Load Calculator - Add](img_editing/load_base.PNG)
+![Load Workflow](img_editing/load_base.PNG)
 
 1. To load a workflow, select one from the dropdown-menu __Workflow URI__, or type the name of the desired workflow.
 
@@ -60,7 +60,7 @@ Now, we will modify the workflow  by adding a new service to replace one of the 
 ![Add static inputs](img_editing/edit_WF_3.PNG)
 
 5. Finally, it remains to connect the output of the newly added service to the empty input of the __hpcPrepWithFile__-Service. Click on the __userString__-output and drag a connection to the empty __textInput__ node. The __Workflow Input__  __extraParameters__ and __sessionToken__ were automatically connected to the __showStringInputHtml__-service and should remain in that state.
-![Connect output to calculator input](img_editing/edit_WF_4.PNG)
+![Connect output to service's input](img_editing/edit_WF_4.PNG)
 
 ## Step 3 - Save workflow
 1. To save the workflow, adapt its __Workflow URI__ to your liking. Do not leave it unchanged, as you will then overwrite the original workflow. The part behind the # will define the name of your workflow. It must not start with a digit, but may contain underscores (_). The part in front of the # defines the unique identifier of your workflow.

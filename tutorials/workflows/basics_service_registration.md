@@ -1,10 +1,10 @@
 
 # Tutorial: Service registration
-This tutorial shows you how to register a new service in the CAxMan cloud.
+This tutorial shows you how to register a new service in the SemWES platform.
 
 1. Navigate to the Workflow Editor.
 
-![wfe_services.PNG](img_editing/navigation.PNG)
+![Navigation](img_editing/navigation.PNG)
 
 2. The dialog to add new services is located at the top of the page.
 ![Add Service](img_editing/add_service_1.PNG)
