@@ -14,6 +14,9 @@ the [semantic-versioning](https://semver.org/) scheme. In a nutshell,
 With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
+### 2019-09-30: Version 3.13.2
+* (PATCH) Updated available Singularity versions for IT4I clusters.
+
 ### 2019-09-30: Version 3.13.1
 * (PATCH) Make debugging easier in [CUDA code
   example](./code_examples/Singularity/hellocuda).
