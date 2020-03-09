@@ -13,11 +13,11 @@ If an update introduces new input or output parameters to a service, this change
 needs to be somehow communicated to the workflow editor such that the new
 parameters can be used in new or existing workflows. To do so: 
 1. Upgrade the web service itself, so that the wsdl file reflects the changes.
-2. Go to the workflow editor and load a workflow which uses your service.
-3. Double-click on the service box in the graphical editor and choose "Edit":
+2. Go to the workflow editor and select the service from the respective dropdown-menu.
+3. Click on "edit" to load the service:
 
   <img src="img_workflows/service_editing.png"
-   alt="After double-clicking a service can be edited" width="300px"/>
+   alt="After selecting it from the dropdown menu a service can be edited"/>
 
 4. The input fields on the top of the workflow-editor website are filled with
    the service properties. Simply click on "Update service", which will cause
