@@ -1,0 +1,13 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aut="http://authmanager.sintef.no/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <aut:getSessionToken>
+         <!--Optional:-->
+         <aut:username>AUTH_USER</aut:username>
+         <!--Optional:-->
+         <aut:password>AUTH_PW</aut:password>
+         <!--Optional:-->
+         <aut:project>AUTH_PROJECT</aut:project>
+      </aut:getSessionToken>
+   </soapenv:Body>
+</soapenv:Envelope>

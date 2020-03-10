@@ -1,0 +1,17 @@
+version: '3'
+services:
+  kafka_broker:
+    build: .
+    image: kafka_broker
+    container_name: kafka_broker
+    ports:
+      - "9092:9092"
+    env_file: .env
+  zookeeper:
+    image: "zookeeper:3.5.5"
+    container_name: zookeeper
+    
+networks:
+  default:
+    external:
+      name: semwes_kafka

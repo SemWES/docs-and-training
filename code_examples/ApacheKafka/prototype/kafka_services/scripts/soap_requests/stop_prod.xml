@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:prod="http://producerservice.kafka.template.sema2flow.dfki.de/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <prod:stopProducer>
+         <sessionToken>TOKEN</sessionToken>
+         <serviceID>SERVICEID</serviceID>
+         <extraParameters></extraParameters>
+      </prod:stopProducer>
+   </soapenv:Body>
+</soapenv:Envelope>

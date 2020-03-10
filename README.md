@@ -27,6 +27,7 @@ tutorials for advanced topics in service development.
   - [Available utility services](#available-utility-services)
   - [Workflow debugging](#workflow-debugging)
   - [Advanced topics](#advanced-topics)
+- [Stream Data Integration](#stream-data-integration)
 - [Reference documentation of platform services](#reference-documentation-of-platform-services)
 
 ## Documentation version 
@@ -264,6 +265,10 @@ hooked up to make a workflow. This section deals with all things done
 * [Branching and looping](workflow_creation/advanced_branching_looping.md):
   Read how you can implement basic branches and loops using only the workflow
   editor.
+
+## Stream data integration
+* [Stream data handling](infrastructure_overview/stream_data_integration.md): Due to its flexible webservice-based workflow structure, SemWES does natively support the integration of stream data into SemWES workflows.
+
 
 ## Reference documentation of platform services
 If you need information on a specific method of one of the platform services,
