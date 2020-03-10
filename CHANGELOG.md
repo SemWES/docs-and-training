@@ -14,6 +14,50 @@ the [semantic-versioning](https://semver.org/) scheme. In a nutshell,
 With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
+### 2020-01-24: Version 3.17.0
+* (MINOR) Added documentation of list-manipulation services in 
+  [HPC-GSS path converters](./workflow_creation/HPC_gss_conversion).
+
+### 2020-01-22: Version 3.16.0
+* (MINOR) Added info on default parameters for number of cores and Singularity
+  version in[HPC-service overview](./workflow_creation/HPC_service).
+
+### 2020-01-21: Version 3.15.0
+* (MINOR) Updated available Singularity versions in the [HPC-service
+  overview](./workflow_creation/HPC_service).
+
+### 2019-12-09: Version 3.14.0
+* (MINOR) Updated available Singularity versions in the [HPC-service
+  overview](./workflow_creation/HPC_service).
+
+### 2019-09-30: Version 3.13.1
+* (PATCH) Make debugging easier in [CUDA code
+  example](./code_examples/Singularity/hellocuda).
+
+### 2019-09-30: Version 3.13.0
+* (MINOR) Updated info on Nvidia support to the [HPC-service
+  overview](./workflow_creation/HPC_service).
+
+### 2019-09-24: Version 3.12.0
+* (MINOR) Added [code example for CUDA applications](./code_examples/Singularity/hellocuda).
+
+### 2019-08-09: Version 3.11.2
+* (PATCH) Fixed a typo in HPC-service documentation.
+
+### 2019-08-09: Version 3.11.1
+* (PATCH) Updated available Singularity versions for IT4I clusters.
+* (PATCH) Fixed a bug in the waiter code example which caused it to crash on
+  getServiceStatus() calls.
+
+### 2019-07-15: Version 3.11.0
+* (MINOR) Added [OpenFoam code example](./code_examples/Singularity/openfoam).
+
+### 2019-07-11: Version 3.10.1
+* (PATCH) Updated documentation for CUDA-enabled HPC jobs using the qviz queue.
+
+### 2019-05-29: Version 3.10.0
+* (MINOR) Updated tutorials to be used in the CFG Genoa code camp
+
 ### 2019-05-28: Version 3.9.1
 * (PATCH) Added a link to the queues available at IT4I.
 * (PATCH) Clarified Singularity image registration.

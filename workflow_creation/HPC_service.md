@@ -33,9 +33,9 @@ The complete set of input parameters is explained in the following table:
 | `parameters` | yes | The parameters to the command specified in `commandline`. |
 | `queue` | yes | The cluster's queue to run the job on. See https://docs.it4i.cz/general/resources-allocation-policy/ for available queue names.|
 | `numNodes` | yes | Number of nodes to reserve for the job. |
-| `numCores` | yes | Number of CPUs to reserve on each node. Note that each cluster-queue combination has a minimum and maximum value for this parameter. |
+| `numCores` | no | Number of CPUs to reserve on each node. Note that each cluster-queue combination has a minimum and maximum value for this parameter. If not provided, a default value will be used. This depends on the queue and cluster, but will usually be such that entire nodes are reserved. |
 | `maxDurationInMinutes` | yes | Maximum runtime after which a job will be aborted automatically. |
-| `SingularityVersion` | yes | Version of the Singularity module to load for execution. Currently available on IT4I's clusters are `2.3.1`, `2.3.2`, `2.4.2`, `2.4.4`, `2.5.1`. Make sure to load a version compatible with your image version. Singularity is backward-compatible but not forward-compatible.) |
+| `SingularityVersion` | no | Version of the Singularity module to load for execution. If not given, the lowest available version will be set automatically. See below for currently available versions on IT4I's clusters. Make sure to load a version compatible with your image version. Singularity is backward-compatible but not forward-compatible.) |
 | `MPILibrary` | no | Module name of the MPI library to load for execution. See section on MPI jobs below for details. |
 | `numMPIProcsPerNode` | no | Number of MPI processes to reserve per reserved node. See section on MPI jobs below for details. |
 | `numMPIProcsTotal` | no | Total number of MPI processes to execute. See section on MPI jobs below for details. |
@@ -44,6 +44,12 @@ The above parameters are combined and passed as a job script to the queueing
 software on the cluster. Note that the resulting job script and call command are
 different depending on whether the MPI-related input parameters are specified or
 not.
+
+**Singularity versions on IT4I's cluster**
+Currently available are:
+* Anselm cluster: `3.5.2` (default value if none given)
+* Salomon cluster: `3.5.2` (default value if none given)
+* Salomon cluster with qdgx queue: `3.3.0`, `3.4.1`
 
 **Example:**
 If your Singularity execution call is `singularity exec my_image.simg python
@@ -95,6 +101,12 @@ _Salomon cluster:_
 * `MVAPICH2/2.1-iccifort-2015.3.187-GNU-5.1.0-2.25`
 * `impi/2018.3.222-iccifort-2018.3.222-GCC-8.1.0-2.30`
 
+_Salomon cluster with qdgx queue:_
+* `OpenMPI/2.1.5-GCC-6.3.0-2.27`
+* `OpenMPI/3.1.4-GCC-6.3.0-2.27`
+* `OpenMPI/4.0.0-GCC-6.3.0-2.27`
+* `impi/2017.4.239-iccifort-2017.7.259-GCC-6.3.0-2.27`
+
 For MPI-enabled jobs, the following job script is created:
 ```bash
 #! /bin/bash
@@ -112,7 +124,12 @@ mpirun -np {numMPIProcsTotal} singularity exec \
 Note that in contrast to the non-MPI job script, Singularity is here executed
 as the argument to the `mpirun` command which sets up the MPI environment.
 
-#### Jobs with Nvidia support
+#### Jobs with Nvidia support on Anselm's qnvidia queue
+To enable Nvidia support for GPU computin on the Anselm cluster, simply choose
+the `qnvidia` queue. Singularity will then be started with the `--nv` option,
+which loads the necessary Nvidia libraries and drivers.
+
+#### Jobs with Nvidia support on Salomon's qviz queue
 To enable Nvidia support for GPU computing, additional options need to be
 passed to Singularity. Currently, this is enabled automatically whenever the
 IT4I `qviz` queue is used. In this case, the job script (MPI or standard) is
@@ -127,6 +144,11 @@ mpirun [MPI options] singularity exec \
 
 The `--nv` option tells Singularity to load the necessary Nvidia libraries and
 drivers.
+
+Please note that for the qviz queue, the value of `SingularityVersion` is
+ignored since Singularity is pre-installed on the visualization nodes used by
+this queue. (But you still have to supply a value, leaving it empty is not
+allowed.)
 
 ### Output arguments
 | Parameter name | Wiring required? | Description |
