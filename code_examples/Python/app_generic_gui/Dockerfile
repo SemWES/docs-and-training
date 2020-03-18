@@ -1,8 +1,8 @@
-FROM tiangolo/uwsgi-nginx:python2.7-alpine3.7
+FROM tiangolo/uwsgi-nginx:python3.6-alpine3.7
 
 # Install dependencies
 COPY requirements.txt /tmp
-RUN apk add --update --virtual build-dep make gcc musl-dev python-dev libxml2-dev linux-headers libxslt-dev \
+RUN apk add --update --virtual build-dep make gcc musl-dev python3-dev libxml2-dev linux-headers libxslt-dev \
   && pip install -r /tmp/requirements.txt \
   && rm /tmp/requirements.txt \
   && apk del build-dep \

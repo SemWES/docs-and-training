@@ -65,7 +65,6 @@ class GUIAppService(ServiceBase):
         logging.info('Validating request...')
 
         if sh.validateSession(token=sessionToken, wsdlurl=authURL):
-
             logging.info('Request is valid')
 
             logging.info('Reading web page header')
@@ -83,8 +82,7 @@ class GUIAppService(ServiceBase):
 
             outputPage = readPageHeader + readPageData + addServiceID + addSessionToken + addWFMURL + readPageFooter
 
-            outputs = [base64.b64encode(outputPage)] + guiSrvc.standard_vals_list
-
+            outputs = [base64.b64encode(outputPage.encode(encoding='utf-8', errors='strict'))] + guiSrvc.standard_vals_list
             logging.info('Returning web page with standard values')
 
             return tuple(outputs)
