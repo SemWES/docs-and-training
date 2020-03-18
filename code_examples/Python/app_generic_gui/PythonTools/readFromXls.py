@@ -23,9 +23,6 @@ from collections import OrderedDict
 import simplejson as json
 import sys
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
 
 def xls2JSON(filename):
     # Open the workbook
