@@ -275,6 +275,17 @@ simulations/calculations to certain clusters by means of the workflow editor.
 However, it also means that you need to upload and register your image with
 every HPC service it should be run on.
 
+### Naming conventions
+Before uploading your image with GSS, please make sure that the filename
+adheres to the following conventions:
+* File ending is `.simg`.
+* The file name contains only *lowercase* letters, digits (0-9) dashes, and
+  underscores.
+* Optionally, the file name end in a _tag_ separated by a colon. The tag may
+  contain uppercase letters. Examples are:
+  * `image-with-tag:v1.0.3.simg`
+  * `image_without_tag.simg`
+
 ### Uploading your image
 To upload your image to GSS, you can use one of the following methods:
 * Start one of the FileBrowser workflows available on the [CloudiFacturing
@@ -283,6 +294,11 @@ To upload your image to GSS, you can use one of the following methods:
   (https://github.com/CloudiFacturing/client_libs)
 
 ### Registering your image
+*IMPORTANT:* Due to a bug in the image-registration process, image registration
+will time out (HTTP error 504) for large image files. If you get a timeout,
+please wait a few minutes and then check the list of registered images, since
+most of the time the registration does work.
+
 #### ... with the clfpy CLI
 The easiest way of registering your image is by using the command-line
 interface (CLI) of the [`clfpy` Python

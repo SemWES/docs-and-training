@@ -14,6 +14,11 @@ the [semantic-versioning](https://semver.org/) scheme. In a nutshell,
 With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
+### 2020-06-12: Version 3.18.0
+* (MINOR) Added documentation of naming conventions for Singularity images.
+* (PATCH) Added note on timeout bug during image registration.
+* (PATCH) Updated dependencies of GUI-app service.
+
 ### 2020-01-24: Version 3.17.0
 * (MINOR) Added documentation of list-manipulation services in 
   [HPC-GSS path converters](./workflow_creation/HPC_gss_conversion).
