@@ -1,0 +1,8 @@
+# CONTEXT_ROOT defines the deployment location relative to the host.
+CONTEXT_ROOT=/demo-kafka-consumer
+
+# Further variables can be used to configure the service without the need of
+# rebuilding its Docker container.
+# In this example, we define the folder where the service stores progress data
+# of the waiter processes it starts.
+LOG_FOLDER=/tmp

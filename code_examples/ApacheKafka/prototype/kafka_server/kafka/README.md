@@ -1,0 +1,1 @@
+Please download the latest version of Apache Kafka from https://kafka.apache.org/downloads, extract it and move the contents into this directory.
