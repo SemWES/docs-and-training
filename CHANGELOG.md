@@ -15,8 +15,9 @@ With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
 
-### 2020-09-23: Version 3.18.0
+### 2020-09-23: Version 3.19.0
 * (MINOR) Added stream data integration python prototype and documentation.
+* (PATCH) Updated service upgrade section.
 
 ### 2020-06-12: Version 3.18.0
 * (MINOR) Added documentation of naming conventions for Singularity images.
