@@ -1,0 +1,252 @@
+"""Simple asynchronous-service example: a waiter service
+
+This example implements a very simple asynchronous CloudFlow service. When
+called, it starts a background task which does nothing but waiting while
+periodically updating a status file. The service's getServiceStatus()
+method, which is called periodically by the workflow manager, reads this
+status file and generates a status html page from it, which is displayed
+during workflow execution.
+"""
+import os
+import base64
+import datetime
+import logging
+import subprocess
+import signal
+
+from spyne import Application, rpc, ServiceBase, Unicode, Integer, Boolean
+from spyne.protocol.soap import Soap11
+from spyne.model.fault import Fault
+
+from clfpy import AuthClient, ExtraParameters
+
+# Define the target namespace
+TNS = "kafka_consumer.dfki.de"
+# Define the name under which the service will be deployed
+SERVICENAME = "KafkaConsumerService"
+
+# Read environment variables to obtain configuration values
+LOG_FOLDER = os.environ["LOG_FOLDER"]
+
+
+class TokenValidationFailedFault(Fault):
+    """Raised when validation of the session token fails"""
+    pass
+
+class KafkaConsumerService(ServiceBase):
+    """The actual waiter asynchronous service."""
+    # Note that the class name does not influence the deployment endpoint
+    # under which the service will be reachable. It will, however, appear
+    # in the wsdl file.
+
+    # We use the @rpc decorator here (instead of @srpc like in the Calculator
+    # example) to have access to Spyne's context argument 'ctx'. Via that
+    # context, we can access class properties (used here to save the
+    # authentication-manager endpoint).
+    @rpc(Unicode, Unicode, Unicode, Unicode, Unicode, Unicode, Unicode, _returns=(Unicode, Unicode),
+          _out_variable_names=("status_base64", "result"),
+          _throws=[TokenValidationFailedFault])
+    def startConsumer(ctx, serviceID, sessionToken, extraParameters, brokerIP, brokerPort, topic, timeout):
+        """Starts a waiter script as a separate process and returns immediately.
+
+        In a more realistic scenario, this is where a longer computation etc.
+        would be started as a separate process. Here, we simply start a process
+        which waits for a while while regularly updating a status file.
+        """
+        logging.info("startConsumer() called with service ID {}".format(serviceID))
+
+        # Check that the session token is valid and abort with a SOAP fault if
+        # it's not. To that end, we use the clfpy library both to extract the
+        # authentication endpoint from the extraParameters input argument and
+        # to communicate with that endpoint. We also save the authentication-
+        # manager endpoint in a class property which we can re-use in methods
+        # that don't have the extraParameters as an argument.
+        ep = ExtraParameters(extraParameters)
+        auth = AuthClient(ep.get_auth_WSDL_URL())
+        if not auth.validate_session_token(sessionToken):
+            logging.error("Token validation failed")
+            error_msg = "Session-token validation failed"
+            raise TokenValidationFailedFault(faultstring=error_msg)
+
+ 
+        # Create a temporary folder to store the status files in.
+        # Note that we use the service ID as a unique identifier. Since this
+        # service is stateless, subsequent calls to getServiceStatus() need to
+        # be able to read the correct status files. (The service can be started
+        # several times in parallel.)
+        # In a more realistic setting, one would set up log directories for a
+        # computation here.
+        logdir = os.path.join(LOG_FOLDER, serviceID)
+        if not os.path.exists(logdir):
+            os.mkdir(logdir)
+        statusfile = os.path.join(logdir, 'status.txt')
+        resultfile = os.path.join(logdir, 'result.txt')
+        logfile = os.path.join(logdir, 'log.txt')
+        pidfile = os.path.join(logdir, 'pid.txt')
+
+        # Store the auth-manager WSDL URL in a file for later use in
+        # getServiceStatus()
+        wsdlfile = os.path.join(logdir, 'wsdl.txt')
+        with open(wsdlfile, 'w') as f:
+            f.write(ep.get_auth_WSDL_URL())
+        logging.debug(f"Stored auth-manager WSDL URL: {ep.get_auth_WSDL_URL()}")
+
+        # Spawn new process running the waiter script.
+        # We pass the status and result file to the script to ensure that the
+        # waiter logs to the correct place.
+        logging.debug("Starting consumer process")
+        command = ['python', 'consume_data.py', statusfile, resultfile, logfile, serviceID, brokerIP, brokerPort, topic, timeout]
+        process = subprocess.Popen(command)
+
+        with open(pidfile, 'w') as f:
+            f.write(str(process.pid))
+        logging.debug(f"Stored process pid: {process.pid}")
+
+        # We now create a first status page to be displayed while the
+        # workflow is executed. Since the waiter process was only just started,
+        # we don't have a proper status yet. So we simply start with an empty
+        # progress bar.
+        # The status page needs to be base64 encoded.
+        status = base64.b64encode(create_html_progress(0, logfile).encode()).decode()
+        result = "UNSET"
+
+        return (status, result)
+
+    @rpc(Unicode, Unicode, _returns=(Unicode, Unicode),
+          _out_variable_names=("status_base64", "result"))
+    def getServiceStatus(ctx, serviceID, sessionToken):
+        """Status-query method which is called regularly by WFM.
+
+        Here, a more realistic service would query the status of a calculation
+        etc. and process its log files to create a status page. Here, the log
+        contains only a single number, which we convert to an html progress
+        bar.
+        """
+        logging.info("getServiceStatus() called with service ID {}".format(serviceID))
+
+        # Create correct file paths from service ID. By using the unique
+        # service ID, we can address the right waiter process in case this
+        # service is called several times in parallel.
+        logdir = os.path.join(LOG_FOLDER, serviceID)
+        statusfile = os.path.join(logdir, 'status.txt')
+        resultfile = os.path.join(logdir, 'result.txt')
+        logfile = os.path.join(logdir, 'log.txt')
+
+        # Read wsdl URL from a file
+        wsdlfile = os.path.join(logdir, 'wsdl.txt')
+        with open(wsdlfile) as f:
+            auth_wsdl = f.read().strip()
+
+        logging.debug("Read WSDL: {}".format(auth_wsdl))
+
+        # Check that the session token is valid
+        auth = AuthClient(auth_wsdl)
+        logging.debug("AuthClient created, validating session token")
+        if not auth.validate_session_token(sessionToken):
+            logging.error("Token validation failed")
+            error_msg = "Session-token validation failed"
+            raise TokenValidationFailedFault(faultstring=error_msg)
+        logging.debug("Token validation succeeded")
+
+        # Read the current status from the status logs. Here, that is only a
+        # single number between 0 and 100.
+        with open(statusfile) as f:
+            current_status = f.read().strip()
+        logging.debug("Status file read")
+
+        if current_status == "100":
+            logging.debug("Waiting completed")
+            status = "COMPLETED"
+            # Read result page from log
+            with open(resultfile) as f:
+                result = f.read()
+            return (status, result)
+
+        # Note that the interface definition of getServiceStatus() specifies
+        # "UNCHANGED" as another option for the return value of
+        # 'status_base64'. In this case, the workflow manager will simply
+        # continue to display the last status page transmitted. This can be
+        # used when the status-page generation in itself is costly.
+
+        # If not finished, create a status page from the current status
+        # This could include more post-processing etc. in a more realistic
+        # service
+        logging.debug("Waiting not done yet")
+        result = "UNSET"
+        status = base64.b64encode(create_html_progress(int(current_status), logfile).encode()).decode()
+        return (status, result)
+
+    @rpc(Unicode, Unicode, _returns=Boolean, _out_variable_name="success")
+    def abortService(ctx, serviceID, sessionToken):
+        """Aborts the currently running service (not implemented, returns false)
+        """
+        logging.info(f"abortService() called with service ID {serviceID}")
+
+        # We obtain the authentication-manager endpoint from a class property
+        # and check that the session token is valid
+        # Read wsdl URL from a file
+        logdir = os.path.join(LOG_FOLDER, serviceID)
+        wsdlfile = os.path.join(logdir, 'wsdl.txt')
+        with open(wsdlfile) as f:
+            auth_wsdl = f.read().strip()
+
+        auth = AuthClient(auth_wsdl)
+        if not auth.validate_session_token(sessionToken):
+            error_msg = "Session-token validation failed"
+            raise TokenValidationFailedFault(faultstring=error_msg)
+
+        pidfile = os.path.join(logdir, 'pid.txt')
+        with open(pidfile) as f:
+            pid = f.read().strip()
+
+        try:
+            os.kill(int(pid), signal.SIGKILL)
+        except Exception as ex:
+            print('Exception while aborting consumer')
+            print(str(ex))
+            return False
+        return True
+
+
+def create_app():
+    """Creates an Application object containing the waiter service."""
+    app = Application([KafkaConsumerService], TNS,
+                      in_protocol=Soap11(validator='soft'), out_protocol=Soap11())
+
+    return app
+
+
+def create_html_progress(progress, logfile):
+    """Creates a very simple html progress page."""
+    max_width = 800
+    relative_progress = progress/100.0 * max_width
+
+    p = subprocess.Popen(['tail', '-30', logfile], shell=False, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+    res, err = p.communicate()
+    if err:
+        logging.error(err.decode())
+        res = ""
+    else:
+        # Use split to get the part of the line that you require
+        res = res.decode()
+        logging.debug("Read 30 lines from log")
+        logging.debug(res)
+
+
+    html = "<html>\n" + \
+        "<head>\n" + \
+        "<title>Consumer status</title>\n" + \
+        "</head>\n" + \
+        "<body style=\"margin: 20px; padding: 20px;\">\n" + \
+        "<h1>Consumer status at " + datetime.datetime.now().strftime('%H:%M:%S') + "</h1>\n" + \
+        "<div style=\"border-radius: 5px; border-color: lightblueblue; border-style:dashed; width: " + str(max_width) + "px; height: 80px;padding:0; margin: 0; border-width: 3px;\">\n" + \
+        "<div style=\"position: relative; top: -3px; left: -3px; border-radius: 5px; border-color: lightblue; border-style:solid; width: " + str(relative_progress) + "px; height: 80px;padding:0; margin: 0; border-width: 3px; background-color: lightblue;\">\n" + \
+        "<h1 style=\"margin-left: 20px;\" >" + str(progress) + "%</h1>\n" + \
+        "</div>\n" + \
+        "</div>\n" + \
+        "<h1>Consumer messages (latest 30)</h1>\n" + \
+        "<textarea class=\"scrollabletextbox\" style=\"height:500px; width:" + str(max_width) + "px; overflow:scroll;\">" + str(res) + "</textarea>" + \
+        "</head>\n" + \
+        "</body>"
+
+    return html

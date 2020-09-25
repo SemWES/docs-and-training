@@ -1,0 +1,5 @@
+spyne==2.12.14
+lxml
+clfpy
+kafka
+pykafka

@@ -6,7 +6,7 @@ the [semantic-versioning](https://semver.org/) scheme. In a nutshell,
 * MAJOR is increased when large, incompatible changes are made. Examples are
   changes in the platform API, removal of components, deployment paths, etc.
 * MINOR is increased when smaller, compatible changes are made. Examples are any
-  additions which which don’t directly affect existing parts of the 
+  additions which which don’t directly affect existing parts of the
   documentation, .
 * PATCH is increased after cosmetic or clarifying changes (wording, typos, etc.)
   or bugfixes of example code.
@@ -14,13 +14,18 @@ the [semantic-versioning](https://semver.org/) scheme. In a nutshell,
 With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
+
+### 2020-09-23: Version 3.19.0
+* (MINOR) Added stream data integration python prototype and documentation.
+* (PATCH) Updated service upgrade section.
+
 ### 2020-06-12: Version 3.18.0
 * (MINOR) Added documentation of naming conventions for Singularity images.
 * (PATCH) Added note on timeout bug during image registration.
 * (PATCH) Updated dependencies of GUI-app service.
 
 ### 2020-01-24: Version 3.17.0
-* (MINOR) Added documentation of list-manipulation services in 
+* (MINOR) Added documentation of list-manipulation services in
   [HPC-GSS path converters](./workflow_creation/HPC_gss_conversion).
 
 ### 2020-01-22: Version 3.16.0
@@ -175,12 +180,12 @@ With each version, a git tag and an accompanying GitHub release will be created.
 * (MINOR) Added a description of the ["global"
   parameters](./service_implementation/available_parameters.md) available for
   each service.
-* (MINOR) Added the [workflow debugger](./code_examples/Python/app-debugger) 
+* (MINOR) Added the [workflow debugger](./code_examples/Python/app-debugger)
   code example, which is deployed and ready to use for everyone.
 * (PATH) Removed hard-coded WFM endpoint from [simple application code example](./code_examples/Python/app-simple).
 
 ### 2018-08-02: Version 1.2.1 – Corrected GSS API
-* (PATCH) Updated the [GSS API](./service_APIs/api_gss.md) to clarify some 
+* (PATCH) Updated the [GSS API](./service_APIs/api_gss.md) to clarify some
   ambiguities in the construction of GSS URIs for new files and folders.
 
 ### 2018-07-02: Version 1.2.0 – HPC logs, sample preprocessor, service deployment

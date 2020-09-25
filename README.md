@@ -27,9 +27,10 @@ tutorials for advanced topics in service development.
   - [Available utility services](#available-utility-services)
   - [Workflow debugging](#workflow-debugging)
   - [Advanced topics](#advanced-topics)
+- [Stream Data Integration](#stream-data-integration)
 - [Reference documentation of platform services](#reference-documentation-of-platform-services)
 
-## Documentation version 
+## Documentation version
 Current documentation version: `3.18.0`
 
 See the [Changelog](CHANGELOG.md) for versioning details.
@@ -201,17 +202,17 @@ hooked up to make a workflow. This section deals with all things done
 * [Tutorial: Overview over the portal GUI](tutorials/workflows/basics_portal_overview.md):
   In this tutorial you will get to know the portal GUI, start a workflow and
   inspect its results.
-  
+
 * [Tutorial: Basic workflow editing](tutorials/workflows/basics_editing.md):
   In this tutorial you will load, modify, and save an existing workflow using
   the graphical workflow editor.
-  
+
 * [Tutorial: Registration of new services](tutorials/workflows/basics_service_registration.md):
   Any newly created service needs to be registered properly to be usable in the
   SemWES platform. Learn about all details and caveats of service
   registration here.
 
-* [Upgrading services](workflow_creation/service_upgrades.md): 
+* [Upgrading services](workflow_creation/service_upgrades.md):
   Sometimes, an already deployed and registered service needs to be upgraded,
   possibly with changes to the input and output parameters. Read here what to
   keep in mind when performing such upgrades.
@@ -222,7 +223,7 @@ hooked up to make a workflow. This section deals with all things done
   execute Singularity images on the available HPC resources.
 
 * [Converting from GSS URIs to file paths and back](workflow_creation/HPC_gss_conversion.md):
-  Files and folders are handled using GSS URIs within the SemWES 
+  Files and folders are handled using GSS URIs within the SemWES
   platform, but on an HPC cluster, absolute paths are required. Learn how
   to convert between the two here.
 
@@ -264,6 +265,10 @@ hooked up to make a workflow. This section deals with all things done
 * [Branching and looping](workflow_creation/advanced_branching_looping.md):
   Read how you can implement basic branches and loops using only the workflow
   editor.
+
+## Stream data integration
+* [Stream data handling](infrastructure_overview/stream_data_integration.md): Due to its flexible webservice-based workflow structure, SemWES does natively support the integration of stream data into SemWES workflows.
+This section features a python based prototype and explanations, and links to demo services and workflows.
 
 ## Reference documentation of platform services
 If you need information on a specific method of one of the platform services,

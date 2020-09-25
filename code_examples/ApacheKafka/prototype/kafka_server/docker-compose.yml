@@ -1,0 +1,18 @@
+version: '3'
+services:
+  kafka_broker:
+    build: .
+    image: kafka_broker
+    container_name: kafka_broker
+    ports:
+      - "9094:9094"   # SSL port
+      - "9095:9095"   # plain port, comment (#) to disable plain external port (requires container restart)
+    env_file: .env
+  zookeeper:
+    image: "zookeeper:3.5.5"
+    container_name: zookeeper
+
+networks:
+  default:
+    external:
+      name: kafka_net_cfg
