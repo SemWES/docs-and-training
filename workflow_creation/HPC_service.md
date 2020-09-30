@@ -47,8 +47,8 @@ not.
 
 **Singularity versions on IT4I's cluster**
 Currently available are:
-* Anselm cluster: `3.5.2` (default value if none given)
-* Salomon cluster: `3.5.2` (default value if none given)
+* Anselm cluster: `3.6.3` (default value if none given)
+* Salomon cluster: `3.6.3` (default value if none given)
 * Salomon cluster with qdgx queue: `3.3.0`, `3.4.1`
 
 **Example:**

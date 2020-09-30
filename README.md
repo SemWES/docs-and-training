@@ -31,7 +31,7 @@ tutorials for advanced topics in service development.
 - [Reference documentation of platform services](#reference-documentation-of-platform-services)
 
 ## Documentation version
-Current documentation version: `3.19.0`
+Current documentation version: `3.19.1`
 
 See the [Changelog](CHANGELOG.md) for versioning details.
 
