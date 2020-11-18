@@ -15,6 +15,9 @@ With each version, a git tag and an accompanying GitHub release will be created.
 
 ## Changelog
 
+### 2020-09-23: Version 3.20.0
+* (MINOR) Added documentation on emgora integration.
+
 ### 2020-09-30: Version 3.19.1
 * (PATCH) Updated default Singularity version for the HPC service.
 
