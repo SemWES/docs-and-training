@@ -28,10 +28,11 @@ tutorials for advanced topics in service development.
   - [Workflow debugging](#workflow-debugging)
   - [Advanced topics](#advanced-topics)
 - [Stream Data Integration](#stream-data-integration)
+- [emGORA Integration](#emgora-integration)
 - [Reference documentation of platform services](#reference-documentation-of-platform-services)
 
 ## Documentation version
-Current documentation version: `3.19.1`
+Current documentation version: `3.20.0`
 
 See the [Changelog](CHANGELOG.md) for versioning details.
 
@@ -269,6 +270,10 @@ hooked up to make a workflow. This section deals with all things done
 ## Stream data integration
 * [Stream data handling](infrastructure_overview/stream_data_integration.md): Due to its flexible webservice-based workflow structure, SemWES does natively support the integration of stream data into SemWES workflows.
 This section features a python based prototype and explanations, and links to demo services and workflows.
+
+## emGORA integration
+* [emGORA integration manual](infrastructure_overview/emgora_integration.md):
+This section will address how to integrate SemWES workflows with the emgora marketplace.
 
 ## Reference documentation of platform services
 If you need information on a specific method of one of the platform services,
